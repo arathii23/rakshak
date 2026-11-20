@@ -14,3 +14,5 @@ services:
         sync: false   # you type this in the Render dashboard; it is never stored in this repo
       - key: TRUST_PROXY_HOPS   # measured on Render: the real client address is 3rd from the right in X-Forwarded-For
         value: "3"
+      - key: DEBUG_IP_DIAG   # off; Render does not delete vars removed from this file, so it is set to 0 explicitly
+        value: "0"
