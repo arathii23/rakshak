@@ -74,8 +74,14 @@ const stubAi = (obj) => ({ chat: async () => (typeof obj === 'string' ? obj : JS
 
 test('AI cannot declare likely_scam when no rule signal exists (capped to warning_signs)', async () => {
   const text = 'He asked me about my holiday plans and the weather in Delhi';
-  const r = await analyze({ text, lang: 'en', sarvam: stubAi({ verdict: 'likely_scam', quotes: [{ quote: 'holiday plans', why: 'x' }], explanation: 'Bad.' }) });
+  const r = await analyze({ text, lang: 'en', sarvam: stubAi({ verdict: 'likely_scam', quotes: [{ quote: 'about my holiday plans', why: 'x' }], explanation: 'Bad.' }) });
   assert.equal(r.verdict, 'warning_signs');
+});
+
+test('AI quotes of only one or two words, with no rule signal, cannot raise a verdict', async () => {
+  const text = 'I got a call about my OTP and the police station nearby';
+  const r = await analyze({ text, lang: 'en', sarvam: stubAi({ verdict: 'warning_signs', quotes: [{ quote: 'my OTP', why: 'x' }, { quote: 'police', why: 'x' }], explanation: 'Careful.' }) });
+  assert.equal(r.verdict, 'no_clear_signs');
 });
 
 test('AI cannot raise a verdict without a quote that exists in the text', async () => {

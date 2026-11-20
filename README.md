@@ -69,7 +69,7 @@ Without a key the app still runs in limited (rules-only) mode.
 | Recording length | 20 s | `MAX_AUDIO_SECONDS` |
 | Text length | 1000 characters | `MAX_TEXT_CHARS` |
 
-Empty, silent or too-short recordings are rejected **before** any credit is spent. Counters are in memory and reset when the server restarts (Render's free tier sleeps when idle), so the real hard stop is your Sarvam credit balance. Worst case at default caps is a few tens of rupees per day (see `docs/TESTING.md` for the arithmetic).
+Empty, silent or too-short recordings are rejected **before** any credit is spent. Counters are in memory and reset when the server restarts (Render's free tier sleeps when idle), so the real hard stop is your Sarvam credit balance. The daily caps bound the spend, but the rupee cost has not been measured; check Sarvam's pricing page.
 
 ## Tests
 

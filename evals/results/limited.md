@@ -1,6 +1,6 @@
 # Eval results: LIMITED (rules only, no AI)
 
-Run: 2026-11-20T17:19:22.471Z · Cases: 63 · **Passed: 63/63**
+Run: 2026-11-20T17:22:39.685Z · Cases: 63 · **Passed: 63/63**
 
 All case texts are synthetic (written by Claude for testing), not real calls.
 

@@ -25,6 +25,7 @@ Rules:
 - One word such as "OTP", "police", "bank" or "urgent" is NOT a scam sign. What matters is what the caller asks the person to DO.
 - A warning NOT to share an OTP/PIN ("never share your OTP", "the bank never asks for it") is genuine advice, not a scam sign.
 - A delivery person who is physically at the person's door and asks for the delivery OTP is normal.
+- A caller who says they are from a police station or office and only asks the person to visit in person, bring documents or ID, or call back on an official number, with no demand for money, codes or apps and no threat, is normal: choose no_clear_signs.
 - Ordinary service calls are not scam signs: appointment reminders, gas or parcel delivery timings, bill reminders that point to the official app or office, and bank fraud checks that ask "did you make this payment?" without asking for an OTP, PIN or money.
 - Family and friends chatting is normal. When unsure, choose not_enough_info or no_clear_signs instead of guessing.
 - Never say the call is safe. Never give a percentage or a score.
@@ -129,6 +130,10 @@ function build({ text, lang, rules, verdict: rVerdict, ai, source, limitedWhy })
     // Guards: the AI alone cannot declare "likely scam", and cannot raise a verdict without a quoted reason.
     if (rules.score === 0 && aiVerdict === 'likely_scam') aiVerdict = 'warning_signs';
     if (rules.score === 0 && !hasQuotes && sev(aiVerdict) > 0) aiVerdict = 'no_clear_signs';
+    // Quotes of only one or two words ("my OTP", "police") describe a topic, not a demand: not enough alone.
+    if (rules.score === 0 && sev(aiVerdict) > 0 && aiHighlights.length > 0 && aiHighlights.every((h) => wordCount(h.text) <= 2)) aiVerdict = 'no_clear_signs';
+    // A bare list of words is not a call: with no rule signal and under 6 words, trust the rules' verdict.
+    if (rules.score === 0 && wordCount(text) < 6) aiVerdict = rVerdict;
     // Take the more cautious of AI and rules; at the low tier prefer the AI's uncertainty.
     if (sev(aiVerdict) === 0 && sev(rVerdict) === 0) verdict = aiVerdict;
     else verdict = sev(aiVerdict) >= sev(rVerdict) ? aiVerdict : rVerdict;
