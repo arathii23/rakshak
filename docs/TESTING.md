@@ -27,6 +27,11 @@ Groups: scams in English, Hinglish and Hindi; genuine calls (delivery, bank, ser
 5. After parent-phone mode was added, five speech-to-text-style cases (V25 to V29: letter-by-letter "O T P", Hindi-script "ओ टी पी", "UPI PIN daliye" refund scam, a family chat, a retelling of a bank advisory) were written after probing the rules with such text. The probe found the rules missed "O T P" spelled with spaces and "PIN daliye"; both were fixed. Rules-only 68/68, live 68/68.
    - V29 ("the bank said not to tell anyone, so I told no one") is only passed because its expectation allows "some warning signs"; the app does flag the quoted phrase "kisi ko mat batana" in that retelling. That is a mild false positive and is not fixed.
 
+**Known mild false positives (documented, not fixed):**
+
+- **A genuine doorstep delivery OTP** (cases G05, G06, V14, V15, and a check on the live site on 2026-11-20): the rules alone say "no clear warning signs", but with the AI layer on, the result is **"some warning signs"** (never "very likely a scam"), because the app cannot confirm the person is really at the door. The eval expectation allows this on purpose. A reader may still see it as a false alarm.
+- **Retelling a bank's advice** (V29): the quoted phrase "kisi ko mat batana" is flagged.
+
 **Caveat:** the fixes were made after seeing these exact failures, so the pass rates above are not an unbiased accuracy measure. It shows the known failure modes are handled, not that the app is accurate on real calls. The case set was written by the same author as the rules (see `evals/results/limited-run1-before-fixes.md` for the first-run failures on the second set).
 
 ## 3. Real-service smoke tests (one run each, on 2026-11-20)
