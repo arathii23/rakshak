@@ -149,3 +149,12 @@ a.btn { text-decoration: none; }
 .ovbox.warn { background: var(--warn-bg); color: var(--warn); border-color: var(--warn); }
 .livecard { background: var(--brand-soft); border-color: var(--brand); }
 @media (prefers-reduced-motion: no-preference) { .ovbox.scam { animation: pulse 1.2s ease-in-out infinite; } @keyframes pulse { 50% { transform: scale(1.02); } } }
+
+/* "Open it on your phone" QR card: only where scanning makes sense (a wide screen with a mouse). */
+.qrcard { display: none; }
+@media (min-width: 700px) and (hover: hover) and (pointer: fine) {
+  .qrcard { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 16px; }
+}
+.qr { width: 132px; height: 132px; border-radius: 8px; background: #fff; border: 1px solid var(--line); }
+.qrtext { display: grid; gap: 6px; }
+.qrtext h2, .qrtext p { margin: 0; }

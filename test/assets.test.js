@@ -18,6 +18,7 @@ test('every local script/style reference has the same ?v= tag and the file exist
       ...[...src.matchAll(/from '\.\/([A-Za-z0-9_-]+\.js)(\?v=[^']+)?'/g)].map((m) => [m[1], m[2]]),
       ...[...src.matchAll(/(?:src|href)="\/((?:app|guard|listen)\.js|styles\.css)(\?v=[^"]+)?"/g)].map((m) => [m[1], m[2]]),
     ];
+    for (const m of src.matchAll(/<img[^>]*\ssrc="\/([^"?]+)"/g)) assert.ok(fs.existsSync(path.join(PUBLIC, m[1])), `${f} references missing image ${m[1]}`);
     for (const [file, tag] of found) {
       refs++;
       assert.ok(tag, `${f} references ${file} without a ?v= tag`);

@@ -91,6 +91,16 @@ Results and known limitations: [`docs/TESTING.md`](docs/TESTING.md). Unverified 
 4. `render.yaml` sets `TRUST_PROXY_HOPS=3`, measured on Render (the visitor's address is 3rd from the right in `X-Forwarded-For`). On another host, measure it again.
 5. Open the `onrender.com` URL. The first visit after idle can take about a minute (free tier wakes up).
 
+### QR code on the home page
+
+On wide screens the home page shows a QR code that opens the app on a phone (it is hidden on phones). It is the file `public/qr.svg`, made once with Apple's built-in QR generator and checked by reading it back:
+
+```bash
+swift scripts/make-qr.swift make https://your-app-address public/qr.svg   # macOS only, no downloads
+```
+
+If the app's address changes, run that again. The running app only serves the finished file.
+
 ## Credits
 
 - **Author:** arathii23

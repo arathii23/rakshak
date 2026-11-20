@@ -47,6 +47,7 @@ function applyLang() {
     else n.textContent = t(k, { s: status.maxAudioSeconds });
   }
   for (const n of document.querySelectorAll('[data-i18n-ph]')) n.placeholder = t(n.dataset.i18nPh);
+  for (const n of document.querySelectorAll('[data-i18n-alt]')) n.alt = t(n.dataset.i18nAlt);
   for (const b of document.querySelectorAll('.seg-btn')) b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
   $('recLimit').textContent = t('recLimit', { s: status.maxAudioSeconds });
   renderExamples();

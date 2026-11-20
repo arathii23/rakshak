@@ -319,9 +319,14 @@ test('status: proxy diagnostic is off by default and reports only a count when e
 
 test('static files always revalidate (a stale script next to fresh HTML breaks the page after an update)', async () => {
   const s = await start();
-  for (const f of ['/', '/listen', '/app.js', '/i18n-live.js', '/styles.css']) {
+  for (const f of ['/', '/listen', '/app.js', '/i18n-live.js', '/styles.css', '/qr.svg']) {
     const r = await s.get(f);
     assert.equal(r.headers.get('cache-control'), 'no-cache', f);
   }
+  // The QR code on the home page is a plain SVG picture (no scripts).
+  const qr = await s.get('/qr.svg');
+  assert.match(qr.headers.get('content-type'), /^image\/svg\+xml/);
+  const qrBody = await qr.text();
+  assert.ok(qrBody.startsWith('<svg') && qrBody.includes('viewBox') && !/<script|onload/i.test(qrBody));
   await s.close();
 });
