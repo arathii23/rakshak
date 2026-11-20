@@ -76,7 +76,7 @@ Empty, silent or too-short recordings are rejected **before** any credit is spen
 ## Tests
 
 ```bash
-npm test          # 110 unit + integration tests (stubbed Sarvam, no network, no credits)
+npm test          # 114 unit + integration tests (stubbed Sarvam, no network, no credits)
 npm run eval      # 68 eval cases through the pipeline in limited (rules-only) mode
 npm run eval:live # same cases with the real Sarvam AI (needs the key; spends a few paise)
 npm run eval:acc -- --set dev,dev2 --configs rules-v2,hybrid-v2   # accuracy benchmark, replayed from saved answers (free)

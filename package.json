@@ -15,6 +15,7 @@
     "eval": "node evals/run.js",
     "eval:live": "node evals/run.js --live",
     "eval:acc": "node evals/acc/run.js",
-    "eval:acc:inspect": "node evals/acc/inspect.js"
+    "eval:acc:inspect": "node evals/acc/inspect.js",
+    "eval:acc:compare": "node evals/acc/compare-runs.js"
   }
 }

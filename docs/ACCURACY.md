@@ -12,7 +12,7 @@ Written 2026-11-21. Everything here is measured on **invented** texts (written b
 | Scam texts flagged, held-out set A (55 texts) | not run (credit cap) | **100% (55/55)** |
 | Honest texts flagged, held-out set A (39 texts) | not run | **5.1% (2/39)** |
 
-With 54 or 55 texts per set, "0 misses" only means the true miss rate is probably below about 7% (95% interval). The honest-text numbers have intervals of roughly 1% to 17%. Both held-out sets together: 109 of 109 scam texts flagged (interval 96.6% to 100%) and 2 of 70 honest texts flagged (2.9%, interval 0.8% to 9.8%).
+With 54 or 55 texts per set, "0 misses" only means the true miss rate is probably below about 7% (95% interval). The honest-text numbers have intervals of roughly 1% to 17%. Both held-out sets together: 109 of 109 scam texts flagged (interval 96.6% to 100%) and 2 of 70 honest texts flagged (2.9%, interval 0.8% to 9.8%). Answering the same held-out texts a second time gave the same picture: 109 of 109 scam texts flagged again, 3 of 70 honest texts flagged (was 2), nothing wrongly called "very likely", and 98.6% of the flagged-or-not decisions unchanged (section 6).
 
 ## 1. How it was measured
 
@@ -20,7 +20,7 @@ With 54 or 55 texts per set, "0 misses" only means the true miss rate is probabl
 - **Flagged** = "some warning signs" or "very likely a scam". **Severe error** = "very likely a scam" said about a genuine or ambiguous text.
 - **Frozen before the held-out runs.** The detector (prompt, rules, merge) was committed as `689f3d6`. Both held-out sets were then run **once** against that commit (rules-only numbers for both sets were free and run first). Intervals are 95% Wilson intervals.
 - **Replay without credits.** Every model answer is cached by a hash of the prompt and text (`evals/cache/chat.jsonl`), so the rule and merge steps can be re-run and checked for free. Spend is counted in a ledger with a hard cap.
-- **One sample per text.** The model's answers vary a little between runs; each text was answered once. Run-to-run variation was not measured.
+- **One answer per text in the tables.** The model's answers vary a little between runs. The numbers in section 3 use one answer per text; a second answer was drawn for the two held-out sets afterwards to measure that variation (section 6). The development sets were answered once.
 
 ## 2. What changed, and why
 
@@ -74,30 +74,56 @@ The keyword rules alone went from 64% to 83% of scams on these sets, but only 61
 
 ## 4. Spend
 
-800 calls (nearly all chat answers, plus the speech chunks), 751,533 prompt and 83,683 completion tokens, 64 seconds of audio. **₹28.77 at the highest prices seen** (₹29.28 and ₹73.2 per million tokens, ₹0.60 per minute; the ledger's cap was ₹30). At the prices on Sarvam's own pages (₹10 and ₹25 per million tokens, ₹0.49 per minute) it is about ₹10. Compare with the Sarvam dashboard.
+800 calls (nearly all chat answers, plus the speech chunks), 751,533 prompt and 83,683 completion tokens, 64 seconds of audio. **₹28.77 at the highest prices seen** (₹29.28 and ₹73.2 per million tokens, ₹0.60 per minute; the ledger's cap was ₹30). At the prices on Sarvam's own pages (₹10 and ₹25 per million tokens, ₹0.49 per minute) it is about ₹10. The second answer to the held-out texts (section 6) added 208 calls, 239,601 prompt and 21,396 completion tokens: ₹8.58 at the highest prices (about ₹2.93 at the pricing pages). **Everything together: 1,008 calls, ₹37.35 at the highest prices, about ₹13 at the pricing pages.** Compare with the Sarvam dashboard.
 
 ## 5. What was found after the held-out run
 
 The numbers above are the ones measured at the freeze. Looking at the two set-A errors afterwards showed one rule-versus-AI problem worth fixing: when the model correctly said "no clear signs" about a retelling, the rules (two kinds of keyword signal) overruled it with "very likely". The merge now answers "warning signs" when the rules found two kinds of signal and the model found none. Effect: the one set-A severe error became a warning; nothing else changed on any set (checked by replaying all four sets from the saved answers). **Set A is no longer a clean test after this fix**; set B was not touched. The gas-delivery cash case was left alone.
 
-## 6. What is still unknown
+## 6. How much the answers vary from run to run
+
+The model's answers are not identical every time. After the held-out numbers were fixed, both held-out sets were answered a **second time with the identical request** (same prompt, text and settings; a separate new answer), and both answers were scored with the current code, including the fix in section 5. That is 208 more calls. Full tables and the ids of the changed texts: [`evals/results/variation.md`](../evals/results/variation.md).
+
+| 208 held-out texts, what the app returns | first answer | second answer |
+|---|---|---|
+| Scam texts flagged (109) | 109 | 109 |
+| Scam texts called "very likely" | 90.8% | 91.7% |
+| Genuine texts flagged (70) | 2 | 3 |
+| Ambiguous texts flagged (29) | 12 | 12 |
+| "Very likely" on a genuine or ambiguous text | 0 | 0 |
+
+- **Verdicts were mostly the same, not identical.** The same four-way verdict came back for 202 of 208 texts (97.1%; interval 93.9% to 98.7%) and the same flagged-or-not decision for 205 (98.6%; interval 95.8% to 99.5%). The model's own wording was identical for only 3 of the 208, so the second answer really was a new one; what stays steady is the verdict.
+- **No scam text crossed the line.** All 109 scam texts were flagged both times; 3 moved between "warning signs" and "very likely" (TA007, TA037, TA045). With 109 texts, "none crossed" means a scam text crossing the line is probably rarer than about 3 in 100.
+- **Three honest-looking texts did cross it:** a genuine movie-ticket OTP message that says not to share it (TA122) went from "no clear signs" to "warning signs"; a customer-care refund call that says to keep card details handy (TB081, ambiguous) went from "no clear signs" to "warning signs"; a pre-approved-loan sales call (TB093, ambiguous) went from "warning signs" to "no clear signs". These are the borderline texts, where a single answer is least reliable.
+- **The model alone varies by the same amount** (96.6% the same verdict, 98.6% the same decision), so the rules and the merge step add no extra noise.
+- **How to read the tables above:** a difference of one or two texts (for example 2 or 3 honest texts flagged out of 70) is inside normal run-to-run variation. It is not evidence that one version is better than another.
+
+Limits: two answers per text only (a text that stayed the same twice can still change on a third try); the development sets were not repeated; the texts are invented.
+
+## 7. What is still unknown
 
 - **Real calls.** Nobody has run the app on a real call. Real callers are longer, interrupted, in other dialects and often not scripted; real honest calls include things nobody invented here.
 - **The test texts are artificial and mostly clear.** All texts were written by an AI; set B by the same model family that judges them; the "ambiguous" label is a judgement. Real accuracy will be lower than these numbers.
 - **Small samples.** Intervals above show how wide it is: one more miss or false alarm moves the rates by 2 to 3 points.
-- **Variation.** The AI is not deterministic and borderline texts can flip between runs; this was not measured (each text was answered once).
+- **Variation.** The AI is not deterministic and borderline texts can flip between runs. Measured with two answers per held-out text (section 6): 97% of verdicts identical, 98.6% the same flagged-or-not decision. Not measured: three or more answers per text, the development sets, or real calls.
 - **Live Guard.** A warning stays for the rest of the call, so any early thin warning on an honest call (one of six in the simulation) stays. Speech was tested on 8 synthetic clips only, with one voice and one noise level; Hinglish speech through a Hindi voice is not the same as a person speaking.
 - **Hindi wording** of the explanations and next steps has not been reviewed by a native speaker.
-- **Not measured at all:** noisy real speakerphone audio on a real phone, other noise levels, other accents, calls longer than a minute, repeated runs, and the first version on set A.
+- **Not measured at all:** noisy real speakerphone audio on a real phone, other noise levels, other accents, calls longer than a minute, more than two answers per text, and the first version on set A.
 
-## 7. Reproduce
+## 8. Reproduce
 
 ```bash
-npm test                                                     # 110 tests, no network
+npm test                                                     # 114 tests, no network
 node evals/acc/run.js --set dev,dev2 --configs rules-v2,hybrid-v2          # replay from saved answers (free)
 node evals/acc/run.js --set test-b --configs hybrid-v2 --live --budget 30  # new texts cost credits (needs the key)
 node evals/live-sim/run.js           # whole calls through Live Guard (replay)
 node evals/speech/run.js --live      # speech check (makes audio on a Mac, spends credits)
+
+# run-to-run variation (section 6): the saved second answers replay for free; --live with a new --sample N draws another
+V=evals/results/variation
+node evals/acc/run.js --set test-a --configs hybrid-v2,ai-v2 --sample 1 --dump $V/draw1-test-a.json
+node evals/acc/run.js --set test-b --configs hybrid-v2,ai-v2 --sample 1 --dump $V/draw1-test-b.json
+node evals/acc/compare-runs.js --a $V/draw0-test-a.json,$V/draw0-test-b.json --b $V/draw1-test-a.json,$V/draw1-test-b.json
 ```
 
 Test sets print only totals unless `--reveal` is added; do that only after the numbers are fixed.

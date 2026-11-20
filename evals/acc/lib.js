@@ -14,9 +14,16 @@ export const PRICE = { inPerM: 29.28, outPerM: 73.2, sttPerMin: 0.6 };
 const sha = (s) => crypto.createHash('sha256').update(s).digest('hex');
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-/** Same inputs → same key, so an unchanged prompt and text is never paid for twice. */
-export const cacheKey = ({ system, user, schema, maxTokens = 450, temperature = 0.1 }) =>
-  sha(JSON.stringify([MODEL, system, user, schema ?? null, maxTokens, temperature]));
+/**
+ * Same inputs → same key, so an unchanged prompt and text is never paid for twice. Sample 0 is the original answer
+ * (its key is unchanged, so every answer saved so far still counts). A higher sample number asks for another,
+ * independent answer to the identical request; it gets its own cache entry and never touches sample 0. That is how
+ * run-to-run variation is measured.
+ */
+export const cacheKey = ({ system, user, schema, maxTokens = 450, temperature = 0.1 }, sample = 0) =>
+  sha(JSON.stringify(sample > 0
+    ? [MODEL, system, user, schema ?? null, maxTokens, temperature, `sample-${sample}`]
+    : [MODEL, system, user, schema ?? null, maxTokens, temperature]));
 
 export class Cache {
   constructor(file) {
@@ -66,15 +73,15 @@ const FATAL = new Set(['auth', 'quota']);
  * client with retries, counts the tokens against the ledger, and caches the answer. `make()` returns a fresh object
  * per case so that `.last` describes only that case's call.
  */
-export function cachedSarvam({ real, cache, ledger, live }) {
+export function cachedSarvam({ real, cache, ledger, live, sample = 0 }) {
   const state = { hits: 0, misses: 0, calls: 0, retries: 0, failures: 0, fatal: null, budgetStop: false };
   const make = () => {
     const self = {
       last: null,
       async chat(args) {
-        const k = cacheKey(args);
+        const k = cacheKey(args, sample);
         const hit = cache.get(k);
-        if (hit) { state.hits++; self.last = { fromCache: true, content: hit.content, finish: hit.finish }; return hit.content; }
+        if (hit) { state.hits++; self.last = { fromCache: true, content: hit.content, finish: hit.finish, usage: hit.usage ?? null }; return hit.content; }
         if (!live) { state.misses++; self.last = { miss: true }; throw new SarvamError('network'); }
         if (state.fatal) { self.last = { fatal: state.fatal }; throw new SarvamError(state.fatal); }
         if (ledger.headroom() < Math.max(ledger.avgCall() * 2, 0.05)) {
@@ -92,7 +99,7 @@ export function cachedSarvam({ real, cache, ledger, live }) {
             ledger.add(toks, true);
             state.calls++;
             cache.put({ k, content, usage: { p: toks.promptTokens, c: toks.completionTokens }, finish: meta?.finish ?? null, ts: new Date().toISOString() });
-            self.last = { fromCache: false, content, finish: meta?.finish ?? null };
+            self.last = { fromCache: false, content, finish: meta?.finish ?? null, usage: { p: toks.promptTokens, c: toks.completionTokens } };
             return content;
           } catch (e) {
             if (usage) ledger.add({ promptTokens: usage.prompt_tokens || 0, completionTokens: usage.completion_tokens || 0 }, false);
@@ -143,6 +150,34 @@ export const fmtRate = (k, n) => {
   const [lo, hi] = wilson(k, n);
   return `${pct(k / n)} (${k}/${n}; 95% CI ${pct(lo)}–${pct(hi)})`;
 };
+
+/**
+ * Compare two draws of the same texts. a and b are arrays of { id, label, typ, verdict, ch } where ch is a short hash
+ * of the model's raw answer (null when the model was not called). Only texts that have a verdict in both draws are
+ * compared. A "flip" is any text whose four-way verdict differs; `flagChanged` marks the ones that also crossed the
+ * line between flagged and not flagged.
+ */
+export function compareRuns(a, b) {
+  const other = new Map(b.map((r) => [r.id, r]));
+  const out = { n: 0, sameVerdict: 0, sameFlag: 0, rawKnown: 0, rawSame: 0, flips: [], byLabel: {} };
+  for (const x of a) {
+    const y = other.get(x.id);
+    if (!x.verdict || !y?.verdict) continue;
+    out.n++;
+    const fx = FLAGGED.has(x.verdict), fy = FLAGGED.has(y.verdict);
+    const lx = x.verdict === 'likely_scam', ly = y.verdict === 'likely_scam';
+    if (x.verdict === y.verdict) out.sameVerdict++;
+    if (fx === fy) out.sameFlag++;
+    if (x.ch && y.ch) { out.rawKnown++; if (x.ch === y.ch) out.rawSame++; }
+    const g = (out.byLabel[x.label] ??= { n: 0, sameVerdict: 0, flagBoth: 0, flagOnlyOne: 0, flagNeither: 0, likelyBoth: 0, likelyOnlyOne: 0, likelyNeither: 0 });
+    g.n++;
+    if (x.verdict === y.verdict) g.sameVerdict++;
+    if (fx && fy) g.flagBoth++; else if (fx || fy) g.flagOnlyOne++; else g.flagNeither++;
+    if (lx && ly) g.likelyBoth++; else if (lx || ly) g.likelyOnlyOne++; else g.likelyNeither++;
+    if (x.verdict !== y.verdict) out.flips.push({ id: x.id, label: x.label, typ: x.typ, a: x.verdict, b: y.verdict, flagChanged: fx !== fy });
+  }
+  return out;
+}
 
 /** rows: [{ c: case, verdict }] with verdict never null. */
 export function score(rows) {

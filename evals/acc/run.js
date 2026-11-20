@@ -4,9 +4,13 @@
 //
 //   node evals/acc/run.js --set dev --configs rules-v1,ai-v1,hybrid-v1            replay from cache only (free; misses are reported)
 //   node evals/acc/run.js --set dev --configs hybrid-v2 --live --budget 25        call Sarvam for cache misses, stop at the cap
+//   node evals/acc/run.js --set test-a --configs hybrid-v2,ai-v2 --sample 1 --dump out.json
+//        --sample N: answers for the identical request drawn again (own cache entries; 0 = the original answers);
+//        --dump: save one row per text (verdicts only, no text) for evals/acc/compare-runs.js
 //
 // Test sets (test-*) print aggregate numbers only unless --reveal is given. Look at individual test errors only
 // after the detector is frozen. The API key is read from .env or the environment and never printed.
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -26,6 +30,8 @@ const reveal = argv.includes('--reveal') || !setName.startsWith('test');
 const budget = Number(opt('budget', 25));
 const concurrency = Number(opt('concurrency', 3));
 const tag = String(opt('tag', 'run'));
+const sample = Number(opt('sample', 0));
+const dumpFile = opt('dump', null);
 const limit = Number(opt('limit', 0));
 const onlyIds = opt('ids', null) ? String(opt('ids')).split(',') : null;
 
@@ -58,9 +64,10 @@ fs.mkdirSync(path.join(evals, 'cache'), { recursive: true });
 const cache = new Cache(path.join(evals, 'cache', 'chat.jsonl'));
 const ledger = new Ledger(path.join(evals, 'cache', 'spend.json'), budget);
 const real = live ? createSarvam({ apiKey: process.env.SARVAM_API_KEY, timeouts: { chat: 45000 } }) : null;
-const cs = cachedSarvam({ real, cache, ledger, live });
+const cs = cachedSarvam({ real, cache, ledger, live, sample });
+const h12 = (s) => crypto.createHash('sha256').update(String(s)).digest('hex').slice(0, 12);
 
-const aiOnly = (eng, content) => {
+const aiOnly =(eng, content) => {
   if (typeof eng.aiOnlyVerdict === 'function') return eng.aiOnlyVerdict(content);
   try { return JSON.parse(String(content).trim().replace(/^```(?:json)?/i, '').replace(/```$/, '')).verdict ?? null; } catch { return null; }
 };
@@ -88,21 +95,36 @@ await pool(cases, concurrency, async (c) => {
       const early = !sv.last && !r.limited; // too short for the AI: the app answers without calling it
       const problem = r.limited ? (sv.last?.miss ? 'cache_miss' : sv.last?.budget ? 'budget' : sv.last?.fatal ? `fatal_${sv.last.fatal}` : `ai_${sv.last?.failed ?? r.limitedReason ?? 'failed'}`) : null;
       for (const h of r.highlights || []) if (!c.text.includes(h.text)) violations++;
-      if (want.some((p) => p.mode === 'hybrid')) results[`hybrid-${engine}`].set(c.id, { verdict: problem ? null : r.verdict, problem, hl: (r.highlights || []).map((h) => h.text) });
+      const ch = sv.last?.content ? h12(sv.last.content) : null; // lets two draws be compared without keeping the answers
+      const usage = sv.last?.usage ?? null;
+      if (want.some((p) => p.mode === 'hybrid')) results[`hybrid-${engine}`].set(c.id, { verdict: problem ? null : r.verdict, problem, hl: (r.highlights || []).map((h) => h.text), ch, usage });
       if (want.some((p) => p.mode === 'ai')) {
         const v = early ? r.verdict : sv.last?.content ? aiOnly(eng, sv.last.content) : null;
-        results[`ai-${engine}`].set(c.id, { verdict: v ?? null, problem: v ? null : (problem || 'unparsed') });
+        results[`ai-${engine}`].set(c.id, { verdict: v ?? null, problem: v ? null : (problem || 'unparsed'), ch, usage });
       }
     }
   }
 });
+
+if (dumpFile) {
+  const file = path.resolve(String(dumpFile));
+  const dump = { set: setName, sample, createdAt: new Date().toISOString(), configs: {} };
+  for (const p of parsed) {
+    dump.configs[p.name] = cases.map((c) => {
+      const r = results[p.name].get(c.id);
+      return { id: c.id, label: c.label, typ: c.typ, lang: c.lang, style: c.style, verdict: r?.verdict ?? null, ch: r?.ch ?? null, p: r?.usage?.p ?? null, c: r?.usage?.c ?? null };
+    });
+  }
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, JSON.stringify(dump));
+}
 
 // ---------------- report ----------------
 const lines = [];
 const say = (s = '') => { lines.push(s); console.log(s); };
 say(`# Accuracy: ${setName} (${cases.length} cases) · tag ${tag} · ${new Date().toISOString().slice(0, 16)}Z`);
 say('');
-say(`Mode: ${live ? 'live (cache first, then Sarvam)' : 'replay from cache only'} · cache hits ${cs.state.hits} · new calls ${cs.state.calls} · retries ${cs.state.retries} · failures ${cs.state.failures}${cs.state.budgetStop ? ' · STOPPED AT BUDGET' : ''}${cs.state.fatal ? ` · STOPPED: ${cs.state.fatal}` : ''}`);
+say(`Mode: ${live ? 'live (cache first, then Sarvam)' : 'replay from cache only'}${sample ? ` · sample ${sample} (a fresh draw for the identical request)` : ''} · cache hits ${cs.state.hits} · new calls ${cs.state.calls} · retries ${cs.state.retries} · failures ${cs.state.failures}${cs.state.budgetStop ? ' · STOPPED AT BUDGET' : ''}${cs.state.fatal ? ` · STOPPED: ${cs.state.fatal}` : ''}`);
 say(`Spend ledger (all runs, upper-bound prices): ₹${ledger.estRs.toFixed(2)} of ₹${budget} cap · ${ledger.d.calls} calls · ${ledger.d.promptTokens} prompt + ${ledger.d.completionTokens} completion tokens`);
 say(`Texts are synthetic. Labels: scam / genuine / ambiguous (see evals/data/*.js). A verdict of "some warning signs" or "very likely a scam" counts as flagged. Highlights outside the submitted text: ${violations}.`);
 say('');
