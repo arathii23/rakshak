@@ -1,0 +1,804 @@
+{
+ "meta": {
+  "about": "Written by the Sarvam model sarvam-105b-conversations (temperature 0.9) from plain-language scenario descriptions; not by the detector author. Labels are the instruction given for each item, then checked by reading (evals/data/test-b-review.md).",
+  "generated": "2026-11-20",
+  "generator": "sarvam-105b-conversations",
+  "script": "evals/acc/generate-b.js",
+  "requested": 120,
+  "kept": 98,
+  "rejected": 22,
+  "review": {
+   "note": "All items were read once, before any detector was run on them. Items were kept unless the text clearly contradicted its label; the reader changed the labels below and nothing else.",
+   "relabelled": {
+    "TB081": "genuine → ambiguous: a customer-care callback that asks the person to \"keep your card details handy for verification\": plausible for a real agency, but also how card-detail scams begin"
+   },
+   "languageTagFixed": 12
+  }
+ },
+ "cases": [
+  {
+   "id": "TB001",
+   "label": "scam",
+   "typ": "digital_arrest",
+   "lang": "en",
+   "style": "caller",
+   "text": "Hello, I am Inspector Vikram Singh from the CBI Delhi. Your Aadhaar has been linked to a Rs 45 lakh hawala network in Gurgaon. We have your video on CCTV. If you breathe a word to your family, we will arrest your wife today itself. Keep the phone on and do not hang up. The cyber cell is watching your screen right now. Cooperate or face treason charges. Stay silent."
+  },
+  {
+   "id": "TB002",
+   "label": "scam",
+   "typ": "digital_arrest",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "Sir, hum CBI team se bol rahe hain. Aapka PAN card ek fake company ke saath match ho gaya hai, jiska turnover 3 crore tha. Abhi hum aapko video call pe dekh sakte hain. Kisi ko mat bataiyega, warna case aapki beti pe shift ho jayega. OTP mat dijiya, bas screen share rakhiye. Hum Mumbai police ke saath connected hain. Chup rahiye aur instructions follow kijiye."
+  },
+  {
+   "id": "TB003",
+   "label": "scam",
+   "typ": "digital_arrest",
+   "lang": "hi",
+   "style": "caller",
+   "text": "Sir, मैं CBI officer बोल रहा हूँ। आपका आधार एक 50 लाख के फर्जी लोन नेटवर्क से जुड़ा हुआ है। हम आपको वीडियो कॉल पर देख रहे हैं। किसी को मत बताइएगा, वरना आपके बेटे को गिरफ्तार कर लेंगे। साइबर सेल आपकी स्क्रीन मॉनिटर कर रही है। चुप रहिए और स्क्रीन शेयर मत कटाइएगा।"
+  },
+  {
+   "id": "TB004",
+   "label": "scam",
+   "typ": "digital_arrest",
+   "lang": "en",
+   "style": "dialogue",
+   "text": "Caller: Good evening, this is Sub-Inspector Mehta from the Enforcement Directorate. We have flagged your account for a suspicious transaction of Rs 22 lakh linked to a Chennai shell company. Please keep your video on, sir. Caller: I am looking at your living room right now through the app. Do not tell your wife or the neighbours, otherwise we will issue a recovery warrant against your son's school. Person: Arre, what are you saying? How did you get my home address? Caller: That is classified, sir. Just stay on the line and open the payment link I am sending. Person: I am not clicking anything. Caller: Then we will have to freeze your SIM within the hour. Person: Fine, tell me what you want exactly."
+  },
+  {
+   "id": "TB005",
+   "label": "scam",
+   "typ": "courier_customs",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "Namaste sir, main customs se bol raha hoon. Aapke naam pe ek parcel aaya tha Bengaluru se, usme kuch illegal drugs pakde gaye hain. Aapko abhi cyber crime officer ko transfer karna padega verification ke liye. Line par rahiye, main call connect kar raha hoon."
+  },
+  {
+   "id": "TB006",
+   "label": "scam",
+   "typ": "courier_customs",
+   "lang": "en",
+   "style": "caller",
+   "text": "Good afternoon, this is the courier enforcement desk. We have detained a package addressed to you at the Chennai hub. The customs scan flagged an undeclared hazardous substance inside. To avoid immediate seizure and legal action, I am transferring you to our cyber crime liaison officer. Please stay on the line."
+  },
+  {
+   "id": "TB007",
+   "label": "scam",
+   "typ": "courier_customs",
+   "lang": "hi",
+   "style": "caller",
+   "text": "Namaskar, main aapka parcel vibhag se hoon. आपके नाम पर आया हुआ एक पार्सल मुंबई एयरपोर्ट पर रोका गया है। उसमें प्रतिबंधित सामग्री मिली है। अब मैं आपको साइबर क्राइम अधिकारी से जोड़ रहा हूँ। कृपया लाइन पर बने रहें।"
+  },
+  {
+   "id": "TB008",
+   "label": "scam",
+   "typ": "courier_customs",
+   "lang": "hinglish",
+   "style": "stt",
+   "text": "sir namaskar main delhi courier se bol raha hoon uhm aapke naam ka ek parcel ruka hua hai aur usme kuch illegal cheez mili hai toh ab main aapko cyber crime officer se baat karaunga verification ke liye line par rahiye bas"
+  },
+  {
+   "id": "TB009",
+   "label": "scam",
+   "typ": "sim_telecom",
+   "lang": "hi",
+   "style": "caller",
+   "text": "सुनो रामलाल जी, मैं टेलिकॉम ऑफिस से बोल रहा हूँ। आपका आधार कार्ड गलत जगह यूज़ हुआ है। अभी तुरंत अपना ओटीपी बताओ नहीं तो आपका सिम आज रात में बंद हो जाएगा। वरना पुलिस केस बनेगा।"
+  },
+  {
+   "id": "TB010",
+   "label": "scam",
+   "typ": "sim_telecom",
+   "lang": "hinglish",
+   "style": "stt",
+   "text": "hi sir mera naam telecom office se ravi hai aur aapka aadhaar card aaj kisi illegal jagah use hua hai bas aap mujhe apna otp bata dijiye warna aapka sim card aaj raat tak cancel ho jayega main bahut serious hoon"
+  },
+  {
+   "id": "TB011",
+   "label": "scam",
+   "typ": "electricity_kyc",
+   "lang": "en",
+   "style": "caller",
+   "text": "Hello this is Ramesh from the electricity board. Your bill for this month is still pending. We have tried calling you three times. Tonight at nine your power will be cut completely. If you want to stop this just call nine eight seven six five four three two one zero immediately. Do not wait otherwise your whole area will face darkness"
+  },
+  {
+   "id": "TB012",
+   "label": "scam",
+   "typ": "electricity_kyc",
+   "lang": "hi",
+   "style": "stt",
+   "text": "नमस्ते sir मैं बिजली बोर्ड से बोल रहा हूँ आपका पिछला बिल अटका हुआ है आज रात नौ बजे लाइन कट जाएगी आप तुरंत इस नंबर पर कॉल कीजिए वरना पूरा मोहल्ला अंधेरे में रहेगा प्लीज जल्दी करिए sir"
+  },
+  {
+   "id": "TB013",
+   "label": "scam",
+   "typ": "electricity_kyc",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "sir mera naam Vikram hai aur main tariff office se bol raha hoon. aapka pending bill 4500 rupees ka hai aur aaj raat 10 baje current cut ho jayega. agar aapko rokna hai toh turant is number 8765432109 par call karo ya phir recharge app download karke payment kar do. jaldi karo warna line band ho jayegi"
+  },
+  {
+   "id": "TB014",
+   "label": "scam",
+   "typ": "electricity_kyc",
+   "lang": "en",
+   "style": "dialogue",
+   "text": "Caller: Namaste, I am speaking from the state electricity office. Your consumer number ends in 4421 has a pending amount of twelve hundred rupees. Tonight at eight we will cut the supply. Please call this number to speak with the help desk. Person: Twelve hundred? But I paid last week. Caller: That payment is under review sir. If you do not call now, the disconnect team is already on the way. Person: Okay, I will call that number right now."
+  },
+  {
+   "id": "TB015",
+   "label": "scam",
+   "typ": "bank_card_code",
+   "lang": "en",
+   "style": "caller",
+   "text": "Hello, this is Raj from State Bank. Your account ending in 4421 is blocked right now because of suspicious activity in Hyderabad. If you don't verify immediately, all your money will be gone in ten minutes. I've sent a code to your mobile. Read it out to me fast, otherwise the freeze will become permanent."
+  },
+  {
+   "id": "TB016",
+   "label": "scam",
+   "typ": "bank_card_code",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "Madam, main HDFC se Rahul bol raha hun. Aapka card Delhi mein block ho gaya hai. Rs 50,000 ka fraud attempt hua hai. OTP verify karna bahut zaroori hai, warna account khali ho jayega. Maine aapke phone pe ek SMS bheja hai. Woh 6 digit ka code mujhe jaldi bata dijiye taaki card unblock ho sake."
+  },
+  {
+   "id": "TB017",
+   "label": "scam",
+   "typ": "bank_card_code",
+   "lang": "en",
+   "style": "dialogue",
+   "text": "Caller: Good morning sir, this is Amit from ICICI. We have detected a suspicious transaction of ₹75,000 from your card ending in 8892. To stop it, I need you to confirm the OTP I just sent. Sir: I didn't do any transaction. Caller: It is urgent sir, the card will be frozen in two minutes if you don't read the code. Sir: I'm not sharing any OTP, you can verify it yourself."
+  },
+  {
+   "id": "TB018",
+   "label": "scam",
+   "typ": "upi_refund",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "sir meri galti se aapke account me 45000 rupaye aa gaye hain, maine abhi aapka number dial kiya tha, wo amount wapas karne ke liye aapko app pe ek request ayegi, usko approve kar dijiye, warna main police complaint karunga aur aapka account freeze ho jayega"
+  },
+  {
+   "id": "TB019",
+   "label": "scam",
+   "typ": "upi_refund",
+   "lang": "en",
+   "style": "caller",
+   "text": "hello this is your cashback department and we have an approved refund of 1200 rupees coming to your registered mobile number, to release it immediately you need to accept the pending payment request on your banking app, just tap approve and then dial the six digit code we will send to you, do not delay otherwise the offer expires in ten minutes"
+  },
+  {
+   "id": "TB020",
+   "label": "scam",
+   "typ": "upi_refund",
+   "lang": "hinglish",
+   "style": "stt",
+   "text": "hello sir mera naam vikram hai aur maine aapke number pe galti se 15000 bhej diye hain, abhi aapke phone pe ek payment request aayegi, usko approve kar dijiye please, agar aapne nahi kiya toh mera boss bahut gussa hoga aur police case ho jayega, thoda jaldi kariye sir, bas ek tap karna hai app pe, theek hai"
+  },
+  {
+   "id": "TB021",
+   "label": "scam",
+   "typ": "apk_install",
+   "lang": "hi",
+   "style": "caller",
+   "text": "नमस्ते शर्मा जी, मैं ट्रैफिक पुलिस मुंबई से बोल रहा हूँ। आपका ई चालान 12000 रुपये का कटा है और हमारी टीम अभी आपके घर के बाहर खड़ी है। जल्दी से इस फाइल को डाउनलोड कर लीजिए वरना गाड़ी जब्त हो जाएगी। तुरंत ओटीपी बताइए ताकि हम इसे रिमूव कर सकें।"
+  },
+  {
+   "id": "TB022",
+   "label": "scam",
+   "typ": "apk_install",
+   "lang": "en",
+   "style": "stt",
+   "text": "hello sir my name is rajeev from the income tax department i am calling about your pending refund of twenty five thousand rupees but your account verification is incomplete so please click this link and enter your pan details and aadhaar number quickly otherwise the scheme will expire today sir just do it now"
+  },
+  {
+   "id": "TB023",
+   "label": "scam",
+   "typ": "remote_support",
+   "lang": "en",
+   "style": "caller",
+   "text": "hello sir I am calling from tech support regarding your aadhar card sir your account will be blocked today if you dont install teamviewer right now sir please download it fast sir we need remote access to fix the issue sir"
+  },
+  {
+   "id": "TB024",
+   "label": "scam",
+   "typ": "remote_support",
+   "lang": "hi",
+   "style": "stt",
+   "text": "नमस्ते sir मेरा नाम राजेश है और मैं support से बोल रहा हूँ आपका account अड़तालीस घंटे में बंद हो जाएगा बस अभी anydesk install कर लीजिए फिर हम आपका refund verify करेंगे sir थोड़ा time लगेगा बस hold कीजिए sir"
+  },
+  {
+   "id": "TB025",
+   "label": "scam",
+   "typ": "remote_support",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "bhai main support se bol raha hoon tere bank ka fraud detect hua hai bas abhi remote app download kar le aur screen share kar tere 45000 rupees refund ke liye verification hogi jaldi kar bhai"
+  },
+  {
+   "id": "TB026",
+   "label": "scam",
+   "typ": "remote_support",
+   "lang": "en",
+   "style": "dialogue",
+   "text": "Caller: sir your hdfc card is compromised and we need to remote into your phone now Person: what do you mean compromised sir Caller: a hacker in mumbai used your details so please install quick support and give the code Person: okay sir I will download it now Caller: good sir do it fast before the money vanishes"
+  },
+  {
+   "id": "TB027",
+   "label": "scam",
+   "typ": "task_job",
+   "lang": "en",
+   "style": "caller",
+   "text": "Hi, I am Raj from JobHub Mumbai. We have a part-time online role for you, just liking videos and writing small reviews. You will earn 8,000 rupees per week. But first, you need to pay a 500 rupee activation fee for your training kit, and then 1,200 for the security deposit. Once you send that, payouts start in two days. Send it now to this UPI ID, don't delay."
+  },
+  {
+   "id": "TB028",
+   "label": "scam",
+   "typ": "task_job",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "Hello, main TalentSquad se Rahul bol raha hoon. Ye part-time online job hai, videos like karna aur chote reviews likhna hai. Weekly payout 10,000 tak hai. Par pehle aapko 300 rupees ka registration charge aur 800 ka security deposit dena hoga. Payouts tabhi start honge jab fee clear ho jayegi. Apna bank detail aur UPI ID abhi share karo, process fast karna hai."
+  },
+  {
+   "id": "TB029",
+   "label": "scam",
+   "typ": "task_job",
+   "lang": "hi",
+   "style": "caller",
+   "text": "नमस्कार, मैं कामगार पोर्टल से सुरेश बोल रहा हूँ। यह पार्ट-टाइम ऑनलाइन जॉब है, वीडियो लाइक करना और रिव्यू लिखना है। आपको हर हफ्ते 7,500 रुपये मिलेंगे। लेकिन payout शुरू करने से पहले आपको 1,000 रुपये का रजिस्ट्रेशन फीस और 2,000 रुपये का सिक्योरिटी डिपॉजिट देना होगा। यह एडवांस फीस है। तुरंत अपना बैंक अकाउंट नंबर और UPI ID भेजें, वरना सीट किसी और को दे देंगे।"
+  },
+  {
+   "id": "TB030",
+   "label": "scam",
+   "typ": "task_job",
+   "lang": "en",
+   "style": "dialogue",
+   "text": "Caller: Hi, this is Vicky from QuickTask. We have a part-time online job for you, liking videos and doing small reviews. You will earn 6,000 rupees weekly.\nPerson: I am not interested, I already have a job.\nCaller: Sir, this is a limited offer only for today. You just need to pay a 400 rupee setup fee and 1,000 rupees security deposit first. After that, your first payout will come in 48 hours. Please share your UPI ID now so we can start immediately."
+  },
+  {
+   "id": "TB031",
+   "label": "scam",
+   "typ": "investment_group",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "Bhai suno, main Rahul bol raha hoon Alpha Trade se. Tera paisa double hone wala hai, 100 percent guarantee hai. Bas aaj raat tak 50,000 rupees daal do, kal subah 1 lakh milega. Jaldi kar, offer khatam ho jayega, warna loss ho jayega. Mujhe abhi UPI kar do, main link bhej raha hoon."
+  },
+  {
+   "id": "TB032",
+   "label": "scam",
+   "typ": "investment_group",
+   "lang": "en",
+   "style": "caller",
+   "text": "Good evening sir, my name is Vikram from Secure Crypto Advisors. I have been watching your portfolio and I can assure you a guaranteed twenty five percent monthly return on your investment. You simply need to transfer fifty thousand rupees today before the market closes. This is a limited time offer and the spots are filling fast. Please share your UPI ID immediately so we can credit the first cycle."
+  },
+  {
+   "id": "TB033",
+   "label": "scam",
+   "typ": "investment_group",
+   "lang": "hi",
+   "style": "caller",
+   "text": "नमस्ते जी, मैं अमित बोल रहा हूँ ग्लोबल बिटकॉइन एडवाइजर से। आपके खाते में बहुत जल्दी दोगुना रिटर्न आ सकता है। बस आज शाम तक पचास हज़ार रुपये हमारे ऐप में डाल दीजिए। गारंटीड मुनाफा है, कोई रिस्क नहीं। जल्दी कीजिए, ऑफर कल सुबह खत्म हो जाएगा। अभी अपना ओटीपी और बैंक डिटेल्स बताइए, मैं तुरंत प्रोसेस कर देता हूँ।"
+  },
+  {
+   "id": "TB034",
+   "label": "scam",
+   "typ": "investment_group",
+   "lang": "hinglish",
+   "style": "stt",
+   "text": "haan ji meri baat suno bas suno main kiran bol raha hoon aur suno ye crypto wala offer bahut bhaari hai bas aaj raat tak 40 hazaar daalne hain aur kal subah 80 hazaar milenge ye 100 percent guarantee hai bas jaldi karo warna band ho jayega mujhe bas apna app kholo aur details daalo aur paisa transfer kar do abhi"
+  },
+  {
+   "id": "TB035",
+   "label": "scam",
+   "typ": "loan_advance_fee",
+   "lang": "hi",
+   "style": "caller",
+   "text": "नमस्ते रमेश जी, मैं भारत फाइनेंस से बोल रहा हूँ। आपका पांच लाख का pre approved loan ready है। बस दस हजार रुपये की processing fee और insurance GST पहले जमा करो। तभी पैसा सीधा खाते में आएगा। जल्दी करो, कल तक offer खत्म हो जाएगा। तुरंत बताइए, fee भेजेंगे या नहीं?"
+  },
+  {
+   "id": "TB036",
+   "label": "scam",
+   "typ": "loan_advance_fee",
+   "lang": "hinglish",
+   "style": "stt",
+   "text": "hello sir mera naam rajesh hai aur aapka saade chaar lakh ka loan pre approved ho chuka hai bas aapko pehle sadhe teen hazaar rupees processing aur gst fee deni hogi tabhi paisa release hoga agar der ki toh offer lapse ho jayega toh jaldi bataiye fee transfer kar rahe ho ya nahi"
+  },
+  {
+   "id": "TB037",
+   "label": "scam",
+   "typ": "loan_advance_fee",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "dekhiye sir aapka loan 3 lakh ka pre approved hai bas 2500 rupees processing aur insurance GST pehle dena hoga tabhi cash account mein aayega aur yeh offer aaj raat tak hi valid hai toh bina time waste kiye bataiye fee bhej rahe hain ya nahi"
+  },
+  {
+   "id": "TB038",
+   "label": "scam",
+   "typ": "loan_advance_fee",
+   "lang": "hinglish",
+   "style": "dialogue",
+   "text": "caller: hello bhai mera naam vikram hai aur aapka loan 2 lakh ka pre approved hai bas 1500 rupees processing fee aur gst pehle do tabhi paisa aayega person: thik hai kitna time hai mere paas caller: bas abhi do minute hain warna offer cancel ho jayega toh jaldi batao person: theek hai main abhi google pay se bhej deta hoon"
+  },
+  {
+   "id": "TB039",
+   "label": "scam",
+   "typ": "lottery_prize",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "hello sir mera naam Rajesh hai aur main Reliance ke head office se bol raha hoon aapka number KBC lucky draw mein select hua hai aur aapko paanch crore rupaye mile hain bas processing fee ke liye aapko aaj hi atharah hazaar rupaye Google Pay karne honge warna prize kisi aur ko chala jayega"
+  },
+  {
+   "id": "TB040",
+   "label": "scam",
+   "typ": "lottery_prize",
+   "lang": "hi",
+   "style": "stt",
+   "text": "हाँ sir aapka number lucky draw में आया है और आपको पचास लाख रुपये मिलने वाले हैं बस tax भरने के लिए पहले बारह हजार रुपये भेजने होंगे वरना यह ऑफर खत्म हो जाएगा और किसी और को मिल जाएगा आप जल्दी करें"
+  },
+  {
+   "id": "TB041",
+   "label": "scam",
+   "typ": "lottery_prize",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "sir aapka number lottery mein select ho gaya hai aur aapko 2 crore milne wale hain bas ek chhoti si processing fee hai 25 hazaar rupees jo aapko aaj hi transfer karni hogi warna prize cancel ho jayega aur aapka account block bhi ho sakta hai please jaldi kijiye"
+  },
+  {
+   "id": "TB042",
+   "label": "scam",
+   "typ": "lottery_prize",
+   "lang": "hinglish",
+   "style": "dialogue",
+   "text": "Caller: namaskar sir aapka number KBC final draw mein aaya hai aur aapko ek crore rupaye milne hain bas ek hazaar rupaye ka tax pending hai jo aapko abhi Google Pay karna hoga Person: ek crore? par maine toh koi form bhara hi nahi tha Caller: woh toh internal selection hai sir jaldi kijiye warna aaj raat tak amount kisi aur ke naam transfer ho jayega Person: theek hai main abhi bhej deta hoon"
+  },
+  {
+   "id": "TB043",
+   "label": "scam",
+   "typ": "relative_emergency",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "Aunty, aap bhai sahab ko abhi call mat karna, warna unki jaan khatre mein pad jayegi. Main unka dost bol raha hoon. Wo Delhi ke Anand Vihar station par accident mein phas gaye hain aur police unhe pakad rahi hai. Humein abhi 50,000 rupees chahiye warna wo unhe lockup mein daal denge. Jaldi bhejiye, aur kisi ko mat batana warna wo maar dalenge."
+  },
+  {
+   "id": "TB044",
+   "label": "scam",
+   "typ": "relative_emergency",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "Uncle ji, main Rahul bol raha hoon, aapke bete Rohit ka friend. Wo abhi Gurgaon highway par ek accident mein stuck hai. Police ne gaadi zabt kar li hai aur hospital mein admit kar diya hai. Humein urgent 30,000 rupees chahiye, warna treatment ruk jayega. Please kisi ko mat batana, specially Rohit ko nahi, warna wo tension le lega. Aap seedha mere account mein transfer kar dijiye."
+  },
+  {
+   "id": "TB045",
+   "label": "scam",
+   "typ": "relative_emergency",
+   "lang": "hinglish",
+   "style": "dialogue",
+   "text": "Caller: Hello, Ramu uncle bol raha hoon, aapke chhote bhai ka dost. Uncle abhi Indore mein accident ke baad hospital mein hain aur unka operation hona hai. Humein turant 75,000 rupees chahiye, warna doctor mana kar denge. Please kisi ko mat batana, specially ghar walon ko nahi.\nPerson: Par uncle, mujhe toh kuch pata nahi, main abhi office mein hoon. Aap unka number kyun nahi lagate?\nCaller: Wo phone nahi utha rahe, aur agar aapne kisi ko bataya toh wo gussa ho jayenge. Please bas aap hi help kariye, jaldi paise transfer kar dijiye."
+  },
+  {
+   "id": "TB046",
+   "label": "scam",
+   "typ": "insurance_bonus",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "Hello sir main Reliance General se bol raha hoon aur aapki policy ka maturity amount 2 lakh 40 hazar abhi stuck hai kyunki tax pending dikha raha hai. Agar aaj raat tak 5000 rupees nahi diye toh bonus cancel ho jayega aur policy lapse ho sakti hai. Jaldi se apna code bataiye taaki hum release kar sakein."
+  },
+  {
+   "id": "TB047",
+   "label": "scam",
+   "typ": "insurance_bonus",
+   "lang": "en",
+   "style": "caller",
+   "text": "Good morning sir, this is your pension office calling from Chennai. Your maturity amount of forty-five thousand rupees is on hold due to TDS clearance. You just need to pay a small processing fee of one thousand rupees to unlock it today. Please share your verification code so we can release the funds immediately."
+  },
+  {
+   "id": "TB048",
+   "label": "scam",
+   "typ": "insurance_bonus",
+   "lang": "hi",
+   "style": "caller",
+   "text": "नमस्ते रमेश जी, मैं LIC ऑफिस से बोल रहा हूँ। आपकी पेंशन की मैच्योरिटी रकम 85 हज़ार रुपये अभी फंसी हुई है। इसे निकालने के लिए आपको बस एक छोटी सी फीस और अपना OTP देना होगा। अगर आज शाम तक ये नहीं किया तो बोनस भी ज़ब्त हो जाएगा। कृपया जल्दी अपना कोड बताइए।"
+  },
+  {
+   "id": "TB049",
+   "label": "scam",
+   "typ": "insurance_bonus",
+   "lang": "hinglish",
+   "style": "stt",
+   "text": "haan hello mera naam rahul hai aur main uhh insurance se baat kar raha hoon sir aapka bonus amount abhi stuck hai kyunki tax pending dikh raha hai toh jaldi se apna code bataiye warna policy lapse ho jayegi sir please aaj hi bata dijiye"
+  },
+  {
+   "id": "TB050",
+   "label": "scam",
+   "typ": "call_merge_or_wrong_code",
+   "lang": "hi",
+   "style": "caller",
+   "text": "नमस्ते सर मेरा नाम राजन है और रमेश जी ने आपका नंबर दिया था वो बोल रहे थे कि आप हमारे warehouse में supervisor की vacancy के लिए अप्लाई किया था अब बस आखिरी step है interview का तो आपसे request है कि आप तुरंत ये call अपने manager के नंबर पे merge कर दीजिए ताकि हम आगे की process शुरू कर सकें और आपकी joining जल्दी हो सके"
+  },
+  {
+   "id": "TB051",
+   "label": "scam",
+   "typ": "call_merge_or_wrong_code",
+   "lang": "en",
+   "style": "stt",
+   "text": "hello sir my name is rajan and ramesh sir shared your contact saying you applied for the warehouse supervisor post and we just need to do one final step which is the interview so i request you to please merge this call with your manager right now so we can proceed further and complete your joining quickly"
+  },
+  {
+   "id": "TB052",
+   "label": "scam",
+   "typ": "fake_authority_bank_loan",
+   "lang": "en",
+   "style": "caller",
+   "text": "Hello, this is Rajan from the cyber crime branch. Your Aadhar linked loan of fifty thousand rupees is three days overdue. If you do not transfer the full amount to our secure account within the next two hours, we will file an FIR against you and publish your defaulter details on the police portal. Your family members will also receive the notice. Please do not call back, just send the money immediately."
+  },
+  {
+   "id": "TB053",
+   "label": "scam",
+   "typ": "fake_authority_bank_loan",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "sir aapka loan pending hai aur EMI clear nahi hui hai agar aapne abhi payment nahi kiya toh hum police case file kar denge aur aapka naam defaulter list mein daal denge sab relatives ko bhi message chala jayega bas jaldi se paise transfer kardo warna legal notice aayega"
+  },
+  {
+   "id": "TB054",
+   "label": "scam",
+   "typ": "fake_authority_bank_loan",
+   "lang": "en",
+   "style": "dialogue",
+   "text": "Caller: Madam, this is Inspector Mehta from the regional fraud squad. Your KYC verification for the ten lakh rupee personal loan is incomplete. Person: But I already paid the first instalment last month. Caller: That does not matter, madam. We have a warrant ready. If you do not remit the remaining balance to this escrow account within sixty minutes, we will raid your residence and handpick your photo to the local newspaper. Person: I cannot send money like this, I need to speak to my husband. Caller: No time for that, madam. The transfer link expires in forty minutes or we arrest you tomorrow morning."
+  },
+  {
+   "id": "TB055",
+   "label": "genuine",
+   "typ": "parcel_timing",
+   "lang": "en",
+   "style": "caller",
+   "text": "hello sir this is rakesh from swift courier your parcel is on the way the driver will reach your flat between two and four pm today please keep the tracking number handy and keep the phone nearby just in case he needs to call you thanks"
+  },
+  {
+   "id": "TB056",
+   "label": "genuine",
+   "typ": "food_arrival",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "hello bhai main rahul hoon swiggy wala order lekar aa gaya hoon building ke neeche khada hoon aap please jaldi neeche aa jaiye main gate ke paas hoon thoda wait kar raha hoon aap aa jao main idhar hi hoon"
+  },
+  {
+   "id": "TB057",
+   "label": "genuine",
+   "typ": "grocery_call",
+   "lang": "hinglish",
+   "style": "stt",
+   "text": "hello sir aapka order aa gaya tha par wo item out of stock ho gaya hai toh maine uske badle dusra brand daal diya hai wo wala thoda sasta bhi hai agar aap chahein toh main usi ko pack kar deta hoon aap bataiye theek rahega"
+  },
+  {
+   "id": "TB058",
+   "label": "genuine",
+   "typ": "bank_branch_kyc",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "Namaste sir, main State Bank of India se bol rahi hoon. Aapka KYC update pending hai, toh please ek baar branch visit karke Aadhaar aur PAN ka copy submit kar dijiye. Ya phir aap official app mein jaake bhi update kar sakte hain, wahan self-KYC ka option mil jayega. Sir, time par kar lena, warna account par temporary restriction lag sakta hai. Thank you sir."
+  },
+  {
+   "id": "TB059",
+   "label": "genuine",
+   "typ": "bank_statement",
+   "lang": "en",
+   "style": "caller",
+   "text": "Good morning, this is HDFC Bank calling regarding your current account. Your monthly statement for the period ending 15th August is now ready and has been emailed to your registered address at abc@email.com. You can download it directly from there. If you did not receive it, please let us know and we will resend it immediately. Thank you for banking with us."
+  },
+  {
+   "id": "TB060",
+   "label": "genuine",
+   "typ": "bank_fraud_check",
+   "lang": "hinglish",
+   "style": "dialogue",
+   "text": "Caller: Hello, this is the fraud team from ICICI Bank. Did you make a payment of 4,500 rupees today to the merchant reference 8842?\nPerson: Nahi, maine toh aaj aisa koi payment nahi kiya. Kya hua?\nCaller: The amount got debited from your account. Agar aapne nahi kiya, toh turant apna card official app se block kar dijiye. Hum code ya OTP kuch nahi maang rahe. Bas app mein jaake block kar dijiye."
+  },
+  {
+   "id": "TB061",
+   "label": "genuine",
+   "typ": "clinic_reminder",
+   "lang": "hi",
+   "style": "caller",
+   "text": "नमस्ते प्रिया जी, कल दोपहर 2 बजे आपका चेकअप है, कृपया समय पर आ जाइए। अगर कोई दिक्कत हो तो हमें 9876543210 पर कॉल कर दीजिएगा। दवाइयां साथ लाना मत भूलिएगा।"
+  },
+  {
+   "id": "TB062",
+   "label": "genuine",
+   "typ": "school_notice",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "Hello mam, school office se baat kar raha hoon, kal parent teacher meeting hai 11 baje, aur fees ka last date bhi isi hafte 15 ko hai, toh please school office jaake jama karwa dijiye, warna late fine lag jayega"
+  },
+  {
+   "id": "TB063",
+   "label": "genuine",
+   "typ": "tuition_teacher",
+   "lang": "en",
+   "style": "caller",
+   "text": "Hi there, just wanted to let you know that I've shifted my evening class to 5 PM tomorrow because of a prior commitment, so please make sure Rahul reaches my place by that time instead of the usual 4, hope that works for you"
+  },
+  {
+   "id": "TB064",
+   "label": "genuine",
+   "typ": "hostel_parent",
+   "lang": "hi",
+   "style": "stt",
+   "text": "अरे माँ मैं यहाँ hostel पहुँच गया हूँ दरअसल बस थोड़ी देर लगी थी और रास्ता भी ठीक नहीं था अब कमरा मिल गया है और सामान भी रख दिया है खाना खाने जा रहा हूँ कल सुबह class है तो चिंता मत करना"
+  },
+  {
+   "id": "TB065",
+   "label": "genuine",
+   "typ": "bank_warning",
+   "lang": "en",
+   "style": "caller",
+   "text": "dear customer this is a reminder from your bank please never share your otp pin or cvv with anyone even if they claim to be from our support team real staff will never ask for these details over the phone if you get any such request immediately call our official helpline and block the number stay safe"
+  },
+  {
+   "id": "TB066",
+   "label": "genuine",
+   "typ": "parent_warning",
+   "lang": "hinglish",
+   "style": "dialogue",
+   "text": "caller hey maa aap dhyan se suno agar koi phone karke bole ki woh police ya bank se hai toh unko koi code ya paisa mat dena kyunki woh sab fraud log hain real police kabhi video call pe arrest nahi karti aur na hi code maangti hai so please kisi ko bhi apna otp ya account details mat dena okay"
+  },
+  {
+   "id": "TB067",
+   "label": "genuine",
+   "typ": "retelling_scam",
+   "lang": "hinglish",
+   "style": "stt",
+   "text": "hey arjun kal mujhe ek call aaya tha ek aadmi bol raha tha ki wo income tax se hai aur mere account mein kuch problem hai par maine usko koi detail nahi diya aur direct 1930 pe report kar diya kyunki mujhe samajh aa gaya tha ki wo pakka fraud tha ab bas thoda tension hai par maine sahi kiya na"
+  },
+  {
+   "id": "TB068",
+   "label": "genuine",
+   "typ": "hr_interview",
+   "lang": "en",
+   "style": "caller",
+   "text": "hello this is priya from hr at techflow solutions i am calling to schedule your interview for the senior analyst role on thursday at eleven in the morning our hr manager will send the meeting link directly to your email so just keep an eye on your inbox and let me know if that time works for you thanks"
+  },
+  {
+   "id": "TB069",
+   "label": "genuine",
+   "typ": "colleague_change",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "haan rahul bhai meeting aaj shift karni hai kyunki mera ek chhota kaam aa gaya hai toh abhi hum log shaam ko paanch baje connect kar lenge instead of three pm please update your calendar and let me know if that works for you thik hai"
+  },
+  {
+   "id": "TB070",
+   "label": "genuine",
+   "typ": "society_maintenance",
+   "lang": "hinglish",
+   "style": "stt",
+   "text": "hello sir maintenance ka amount is month ready hai aap isko society office mein cash ya phir society app se pay kar sakte hain bas dhyan rakhiyega ki due date miss na ho kyunki late fee lag sakti hai agar aapko koi help chahiye toh office mein aake mil lijiyega ok bye"
+  },
+  {
+   "id": "TB071",
+   "label": "genuine",
+   "typ": "telecom_plan",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "Hello, aapka Jio ka 1.5GB daily wala plan kal expire ho raha hai. Recharge karne ke liye bas official MyJio app open karo aur wahan se payment kar do. Koi aur link mat click karna. Sirf app se hi karna, theek hai? Dhanyawaad, have a good day."
+  },
+  {
+   "id": "TB072",
+   "label": "genuine",
+   "typ": "bill_reminder",
+   "lang": "en",
+   "style": "caller",
+   "text": "Good evening sir, this is BSES Delhi calling regarding your electricity bill. The due date is the 15th of this month, so kindly pay it through our official app or visit your nearest counter. Late payment charges will apply after the due date, so please clear it on time. Thank you for your cooperation."
+  },
+  {
+   "id": "TB073",
+   "label": "genuine",
+   "typ": "dth_recharge",
+   "lang": "en",
+   "style": "dialogue",
+   "text": "Caller: Hello, this is Tata Play. Your DTH account needs a recharge urgently, otherwise the channels will stop by tomorrow. Person: Oh, I didn't know. How can I do it? Caller: You can simply recharge through the Tata Play app using your registered mobile number. No need to share any OTP with anyone. Person: Okay, I will do it right now. Thank you."
+  },
+  {
+   "id": "TB074",
+   "label": "genuine",
+   "typ": "police_followup",
+   "lang": "hi",
+   "style": "caller",
+   "text": "नमस्कार सर मैं थाना कोतवाली से हेड कांस्टेबल बोल रहा हूं आपने जो रिपोर्ट दर्ज कराई थी उसके लिए आपको एक बार यहां आना पड़ेगा अपना आधार कार्ड साथ लाइएगा और घटना की जानकारी वाले कागज पर हस्ताक्षर करना होगा समय दोपहर तीन बजे का रखा है कल आकर मिलिए धन्यवाद"
+  },
+  {
+   "id": "TB075",
+   "label": "genuine",
+   "typ": "passport_appointment",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "hello aapka passport appointment confirm ho gaya hai 15 tarikh subah 10 baje aaiye apna birth certificate aur address proof saath rakhna aur original photo bhi le aana fees online hi pay kar denge bas form fill up karke printout lekar aa jaiye aur koi dikkat ho toh mujhe message kar dena"
+  },
+  {
+   "id": "TB076",
+   "label": "genuine",
+   "typ": "tax_notice_portal",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "sir yeh income tax department se call hai aapke notice ka reference number one two three four five hai humne registered email par mail bhej diya hai aap bas official portal par jaakar reply kar dijiye koi bhi payment phone par mat kijiyega aur kisi ko apna password share mat karna hum kabhi phone par details nahi maangte thank you"
+  },
+  {
+   "id": "TB077",
+   "label": "genuine",
+   "typ": "property_tax",
+   "lang": "hi",
+   "style": "stt",
+   "text": "नमस्कार जी मैं नगर निगम कार्यालय से बोल रहा हूँ आपके मकान का संपत्ति कर बकाया है आप इसे ऑनलाइन जमा कर सकते हैं या फिर अपने वार्ड कार्यालय में जाकर भी भुगतान कर सकते हैं कृपया रसीद संभाल कर रखें और अगर कोई समस्या हो तो हमें संपर्क करें धन्यवाद"
+  },
+  {
+   "id": "TB078",
+   "label": "genuine",
+   "typ": "friends_dinner",
+   "lang": "en",
+   "style": "caller",
+   "text": "hey raj i was thinking we could hit that italian place near the metro today around seven if you are free my treat but we can just split the bill later since i know you hate asking for cash right so let me know asap"
+  },
+  {
+   "id": "TB079",
+   "label": "genuine",
+   "typ": "mother_check",
+   "lang": "hinglish",
+   "style": "dialogue",
+   "text": "caller: beta tumne lunch kiya kya aaj\nperson: haan maa abhi kha liya\ncaller: theek hai aur ghar kab tak aaoge\nperson: main office ke baad seedha aaunga lagbhag saat baje tak"
+  },
+  {
+   "id": "TB080",
+   "label": "genuine",
+   "typ": "wedding_invite",
+   "lang": "en",
+   "style": "stt",
+   "text": "hey uncle ji i was just calling to say that we are having the wedding at our farmhouse next month and you should definitely come with the whole family there will be lots of food and music so just mark your calendars and let us know if you need any help with travel or stay and please bring the kids too"
+  },
+  {
+   "id": "TB081",
+   "label": "ambiguous",
+   "typ": "customer_callback",
+   "lang": "en",
+   "style": "caller",
+   "text": "hello madam thank you for calling customer care regarding your recent complaint number four eight two nine one we have processed your refund to the original payment method and it should reach your account within five to seven working days please keep your card details handy for verification thank you for your patience"
+  },
+  {
+   "id": "TB082",
+   "label": "genuine",
+   "typ": "return_pickup",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "hello bhai mera return request accept ho gaya hai ab kal slot book karna hai aapke paas kal subah ya shaam ka time hai batao mujhe kaunsa time theek rahega main ghar pe rehunga pickup boy ko andar bhej dunga"
+  },
+  {
+   "id": "TB083",
+   "label": "genuine",
+   "typ": "hotel_booking",
+   "lang": "hinglish",
+   "style": "stt",
+   "text": "haan hello main hotel booking ke liye call kar raha tha mera naam arjun hai aur meri booking confirm ho gayi hai check in time shaam ko paanch baje hai bas aap thoda early bata dena mujhe rasta samajh aa jayega theek hai bye bye"
+  },
+  {
+   "id": "TB084",
+   "label": "genuine",
+   "typ": "otp_sms",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "Namaste, yeh aapki booking ka OTP hai: 482911. Kripya ise kisi ke saath share mat kijiye, yeh sirf aapke liye hai."
+  },
+  {
+   "id": "TB085",
+   "label": "genuine",
+   "typ": "payment_received",
+   "lang": "en",
+   "style": "caller",
+   "text": "Hi Ramesh, your UPI payment of Rs 1,250 to Sharma Electronics has been successfully credited. Transaction ID is UP789456123. Thank you for using our service."
+  },
+  {
+   "id": "TB086",
+   "label": "genuine",
+   "typ": "emi_debited",
+   "lang": "hinglish",
+   "style": "dialogue",
+   "text": "Caller: Madam, aapka is mahine ka EMI debit confirm ho gaya hai. Amount Rs 4,500 aapke account se kat chuka hai.\nPerson: Achha, theek hai. Mujhe receipt kab tak milegi?\nCaller: Aapko abhi SMS par confirmation aa jayega, bas thoda wait kijiye.\nPerson: Okay, dhanyavaad."
+  },
+  {
+   "id": "TB087",
+   "label": "ambiguous",
+   "typ": "doorstep_or_ride_otp",
+   "lang": "en",
+   "style": "caller",
+   "text": "Hello, I am at your gate with the parcel. Sir, the delivery code is needed to unlock the box. Can you please share the four digit code from your SMS? I am standing right here, just need to verify before I hand it over."
+  },
+  {
+   "id": "TB088",
+   "label": "ambiguous",
+   "typ": "cab_start_otp",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "Bhaiya, main gate pe hoon cab lekar. App mein ride-start code dikh raha hai, usko bol do. OTP type karne mein time lag raha hai, bas woh code bata do taaki meter start ho jaye. Location sahi hai, bas code chahiye."
+  },
+  {
+   "id": "TB089",
+   "label": "ambiguous",
+   "typ": "hotel_desk",
+   "lang": "hinglish",
+   "style": "dialogue",
+   "text": "Caller: Good evening, front desk se bol raha hoon. Sir, aapki booking ke liye ek code chahiye verification ke liye. Person: Haan, bataiye. Caller: Sir, woh code aapke email par aaya hoga, ek baar check karke batayenge? Person: Oh haan, ek second. Caller: Theek hai sir, main wait kar raha hoon."
+  },
+  {
+   "id": "TB090",
+   "label": "ambiguous",
+   "typ": "relative_money",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "Hello Didi, main abhi station pe hoon. Train late ho gayi hai toh mujhe urgent ek hazaar chahiye, please PhonePe kar do na, baad mein wapas de dunga. Mummy ne bhi bola tha aaj help karne ko, jaldi kar do yaar."
+  },
+  {
+   "id": "TB091",
+   "label": "ambiguous",
+   "typ": "colleague_lend",
+   "lang": "en",
+   "style": "caller",
+   "text": "Hi, umm... hey, it's Rahul from accounts. Look, my salary is due next week only, but there's a sudden medical bill at home. Could you lend me five thousand till payday? I'll transfer it back immediately on the 5th, I promise. Really sorry to ask, but I'm stuck right now."
+  },
+  {
+   "id": "TB092",
+   "label": "ambiguous",
+   "typ": "neighbour_help",
+   "lang": "hinglish",
+   "style": "dialogue",
+   "text": "Caller: Bhai, ek urgent kaam tha, dawaani ki shop se medicine chahiye. UPI kar do na turant, baad mein de dunga.\nPerson: Kitna chahiye?\nCaller: Bas do sau rupaye, jaldi kar do yaar, line lag rahi hai."
+  },
+  {
+   "id": "TB093",
+   "label": "ambiguous",
+   "typ": "loan_telemarketing",
+   "lang": "en",
+   "style": "caller",
+   "text": "hello sir, i am calling from quickfund finance, we have a pre approved personal loan offer waiting for you. the amount is up to five lakh rupees and the interest rate is quite low right now. if you are interested, i can just take your basic details and process it further. would you like to go ahead, sir?"
+  },
+  {
+   "id": "TB094",
+   "label": "ambiguous",
+   "typ": "broker_property",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "bhaiya, woh flat jo humne dekha tha, uski booking ke liye token amount dena hoga. agar aap abhi do hazaar de doge toh flat aapke naam par hold ho jayega. baad mein negotiation bhi ho sakti hai par pehle slot secure karna zaroori hai. toh bataiye, amount transfer kar doon abhi?"
+  },
+  {
+   "id": "TB095",
+   "label": "ambiguous",
+   "typ": "kyc_visit",
+   "lang": "hinglish",
+   "style": "stt",
+   "text": "umm sir, aapka kyc pending hai, branch aana padega. kaunsi branch aayein, woh bata dijiye. haan sir, bas ek baar form bhar ke lana hoga. theek hai sir, aap aa jayenge na?"
+  },
+  {
+   "id": "TB096",
+   "label": "ambiguous",
+   "typ": "scam_opening_courier",
+   "lang": "hinglish",
+   "style": "caller",
+   "text": "Namaste sir, aapka parcel aaj deliver hona tha but thoda issue aa gaya hai. Tracking update ke hisaab se address mismatch ho raha tha, toh main bas confirm kar raha tha ki aap abhi available hain ya nahi."
+  },
+  {
+   "id": "TB097",
+   "label": "ambiguous",
+   "typ": "scam_opening_police",
+   "lang": "en",
+   "style": "caller",
+   "text": "Good afternoon, this is the Cyber Crime Department. We are looking into a complaint that was registered against your mobile number recently, and we just need to inform you that our team is reviewing the details at this stage."
+  },
+  {
+   "id": "TB098",
+   "label": "ambiguous",
+   "typ": "tax_discrepancy",
+   "lang": "hinglish",
+   "style": "dialogue",
+   "text": "Caller: Sir, tax return file karte waqt ek discrepancy aa rahi hai. Aap please apna official portal check kar lijiye. Person: Theek hai, main abhi dekhta hoon. Caller: Ji, bas wahan pe last filing date aur amount ek baar verify kar lijiye. Person: Haan, main kar leta hoon. Caller: Thank you, uske baad hum aage ki baat karte hain."
+  }
+ ]
+}
