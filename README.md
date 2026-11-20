@@ -86,7 +86,8 @@ Results and known limitations: [`docs/TESTING.md`](docs/TESTING.md). Unverified 
 1. Push this repo to GitHub.
 2. Render → **New → Blueprint** → pick the repo (it reads `render.yaml`).
 3. When asked, type `SARVAM_API_KEY` into Render's dashboard.
-4. Open the `onrender.com` URL. The first visit after idle can take about a minute (free tier wakes up).
+4. `render.yaml` sets `TRUST_PROXY_HOPS=3`, measured on Render (the visitor's address is 3rd from the right in `X-Forwarded-For`). On another host, measure it again.
+5. Open the `onrender.com` URL. The first visit after idle can take about a minute (free tier wakes up).
 
 ## Credits
 

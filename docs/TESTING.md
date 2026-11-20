@@ -50,7 +50,20 @@ The audio here is **clean computer-generated speech**, not a phone speaker in a 
 
 ## 5. Deployment checks
 
-Filled in after deployment (see the final report).
+Public URL: https://rakshak-u47o.onrender.com (Render free tier). Checked on 2026-11-20 with plain `curl` (no cookies, no login):
+
+| Check | Expected | Actual |
+|---|---|---|
+| `/`, `/guard`, `/listen`, `/icon.svg` without logging in | 200 | 200 for all four |
+| `/api/status` | AI enabled (key present on the server) | `"ai": true`; the key is not visible to the browser |
+| One real `/api/check` on the public URL (synthetic digital-arrest text) | very likely a scam, with exact quotes | very likely a scam, source `ai`, highlights on "digital arrest", "Kisi ko mat batana", "OTP bata dijiye" |
+| Security headers | CSP, nosniff, no-referrer | present |
+| Which `X-Forwarded-For` entry is the real visitor? | measured, not guessed | Render sends 3 entries; the visitor's own address (compared with my public IP) is **3rd from the right**. Adding forged entries only lengthens the list on the left, so the 3rd from the right stays the real one. Set `TRUST_PROXY_HOPS=3` |
+| Per-visitor limit on the live host (10 wrong live-session codes per 10 minutes) | 11th request blocked | 404 x10, then 429; forged `X-Forwarded-For` headers did not get past it |
+
+Not checked: that two different real visitors get separate buckets (I only had one address); behaviour with the service asleep for a long time other than a first-visit delay of up to about a minute; the app on real phones.
+
+The proxy measurement used a temporary flag (`DEBUG_IP_DIAG`), now set to 0.
 
 ## 6. Cost arithmetic (default caps, worst case per day)
 
