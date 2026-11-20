@@ -1,0 +1,73 @@
+// SECOND DEVELOPMENT set: written after the first detector's dev results were known, to probe known weak spots on
+// purpose (scams that avoid the obvious words, advice/news/retelling that quote scam words, genuine requests that
+// involve money or codes). The detector may be tuned on this set; it is not a test set. All texts are synthetic.
+// Labels as in dev.js.
+const c = (id, label, typ, lang, style, text) => ({ id, label, typ, lang, style, text });
+
+export const DEV2 = [
+  // ---------------- scams ----------------
+  c('E001', 'scam', 'code_no_keyword', 'en', 'caller', `Sir, we are doing a quick security survey for your bank. Please read out the six numbers that have just come on your phone, it takes ten seconds.`),
+  c('E002', 'scam', 'small_test_payment', 'hinglish', 'caller', `Madam main aapko ek rupaye ka GPay request bhej raha hoon verification ke liye, aap bas accept kar dijiye, paise turant wapas aa jayenge.`),
+  c('E003', 'scam', 'qr_cashback', 'en', 'caller', `To get your 3,000 rupee cashback, scan this QR code with your payment app and enter your PIN.`),
+  c('E004', 'scam', 'job_task', 'hinglish', 'caller', `Aapko ek mission task mila hai: bas video like karke screenshot bhejna hai. Account activate karne ke liye pehle 100 rupaye bhej dijiye.`),
+  c('E005', 'scam', 'relative_new_number', 'en', 'caller', `Hi mum, this is my new number, I broke my phone. Can you quickly pay this invoice for me? I will send you the account details now. Please do not tell Dad yet, I will explain later.`),
+  c('E006', 'scam', 'gift_parcel', 'en', 'caller', `I have sent you a gift parcel from London with jewellery and a phone. The courier is holding it at Delhi airport and needs 30,000 rupees as customs charges before delivery.`),
+  c('E007', 'scam', 'apk_link', 'hinglish', 'caller', `Aapka interview WhatsApp video par hoga. Uske liye hum ek link bhej rahe hain, usse hamara interview app install kar lijiye aur uski saari permission allow kar dijiye.`),
+  c('E008', 'scam', 'code_no_keyword', 'hi', 'caller', `कृपया आप अपने मोबाइल पर आए हुए छह अंकों के कोड को मुझे पढ़कर सुना दीजिए, उसके बाद आपका खाता सुरक्षित हो जाएगा।`),
+  c('E009', 'scam', 'gift_cards', 'en', 'caller', `Buy Google Play gift cards worth 10,000 rupees and read me the codes on the back. The officer will clear your case once the codes are verified.`),
+  c('E010', 'scam', 'fastag', 'hinglish', 'caller', `Sir aapka FASTag recharge fail ho gaya hai, main link bhej raha hoon wahan se bharlo aur card ki detail daal dena, nahi to toll par double charge lagega.`),
+  c('E011', 'scam', 'remote_support', 'en', 'caller', `I am from the income tax department. To avoid a penalty, download this software to submit your pending return and give me the access code it shows.`),
+  c('E012', 'scam', 'aadhaar_pan', 'hinglish', 'caller', `Sir aapka Aadhaar suspend ho gaya hai, ise active karne ke liye aapko ek link par click karke apna Aadhaar number aur phone par aaya code daalna hoga.`),
+  c('E013', 'scam', 'lottery_prize', 'hi', 'caller', `आप ने एक लाख का इनाम जीता है। इसे पाने के लिए पहले पांच हज़ार रुपये की जीएसटी आपको हमारे खाते में डालनी होगी।`),
+  c('E014', 'scam', 'loan_threat', 'en', 'dialogue', `Caller: Sir your credit card has an unpaid amount and a legal notice is being prepared. Person: But I paid last month. Caller: The payment did not reflect. If you pay 24,000 right now through this link, I will stop the notice and no police will visit you. Person: I do not have that much. Caller: Then your family will be informed today.`),
+  c('E015', 'scam', 'otp_fraud', 'hinglish', 'stt', `haan sir main sbi se bol raha hoon aapke card pe ek transaction ho gaya hai agar aapne nahi kiya to cancel karne ke liye ek o t p aayega wo bol do jaldi se`),
+  c('E016', 'scam', 'sim_trai', 'hi', 'stt', `आपके नाम पर एक सिम कार्ड चल रहा है जो गलत काम में इस्तेमाल हुआ है आप तुरंत कॉल पर बने रहिए पुलिस आपसे बात करेगी और किसी को ये बात मत बताना`),
+  c('E017', 'scam', 'electricity', 'en', 'caller', `Sir, there is a problem with your electricity meter and the board will disconnect it today. Our engineer will visit, you only need to pay his visit charge of 2,000 rupees on this UPI number so he comes.`),
+  c('E018', 'scam', 'relative_new_number', 'hinglish', 'caller', `Mummy main Ankit bol raha hoon, mera phone kharab hai ye dost ka number hai. Mujhe abhi fees bharni hai, 25,000 is account mein bhej do. Papa ko abhi mat batana.`),
+  c('E019', 'scam', 'courier', 'en', 'caller', `This is the customs department. A parcel from Dubai in your name has gold. To release it, pay the duty of 48,000 rupees today, otherwise the parcel will be destroyed and a case will be filed.`),
+  c('E020', 'scam', 'bank_kyc', 'hi', 'caller', `आपका एटीएम कार्ड ब्लॉक हो गया है। उसे चालू करने के लिए कृपया अपना कार्ड नंबर, एक्सपायरी डेट और पिन बताइए।`),
+  c('E021', 'scam', 'bank_kyc', 'hinglish', 'caller', `Aapke Paytm KYC ke liye executive aapke ghar aayega. Uske pehle aap mujhe apna Aadhaar aur wo code bata dijiye jo abhi aapke phone par aayega.`),
+  c('E022', 'scam', 'job_task', 'en', 'caller', `We are hiring remote customer care agents. Salary 30,000 a month. To receive your laptop we need a refundable courier deposit of 4,500 rupees, please send it to this account today.`),
+  c('E023', 'scam', 'remote_support', 'en', 'caller', `We noticed your computer is sending error messages. Please open the browser, go to this website, and let me connect to your screen so that I can remove the virus.`),
+  c('E024', 'scam', 'loan_fee', 'hinglish', 'dialogue', `Caller: Sir main aapko 20 lakh ka loan de sakta hoon, interest bahut kam. Person: Kya karna hoga? Caller: Bas aap apna Aadhaar aur PAN bhejiye aur 3,000 rupaye insurance ke liye abhi bhej dijiye. Person: Pehle loan aayega na? Caller: Pehle insurance, tabhi loan release hoga.`),
+  c('E025', 'scam', 'kidnap_hoax', 'en', 'caller', `Your son has been caught with drugs in Bangalore. Do not call him. Pay 1.5 lakh to this account for his bail within the hour or he will be taken to jail.`),
+  c('E026', 'scam', 'call_merge', 'hinglish', 'caller', `Sir ek minute, aap mera call apne bank wale dost ke saath merge kar do, wo meri loan ki file verify kar dega, bahut jaldi hai please.`),
+  c('E027', 'scam', 'electricity', 'hi', 'caller', `आपका बिजली का कनेक्शन आज रात कट जाएगा क्योंकि पिछला बिल नहीं भरा गया है। इस नंबर पर तुरंत कॉल कीजिए और अपना बिजली का खाता नंबर बताइए।`),
+  c('E028', 'scam', 'scholarship', 'en', 'caller', `Congratulations, you have been shortlisted for a government scholarship. Download the form from this link and enter your bank details and the verification code we send.`),
+
+  // ---------------- genuine ----------------
+  c('E101', 'genuine', 'bank_callback', 'en', 'caller', `Hello, I am calling from the bank in response to the request you made yesterday to block your lost card. Can you please confirm the last four digits of the card? We never ask for the full number, your PIN or an OTP.`),
+  c('E102', 'genuine', 'family_warning', 'hinglish', 'caller', `Beta, yaad rakhna, bank wale kabhi bhi tumse OTP nahi maangte. Agar koi maange to phone kaat dena.`),
+  c('E103', 'genuine', 'advice', 'en', 'caller', `RBI has clarified that you never need to enter your UPI PIN to receive money. If a request asks for your PIN, it is for sending money, so decline it.`),
+  c('E104', 'genuine', 'emi_bounce', 'en', 'caller', `Your EMI of 6,200 failed this month due to low balance. A bounce charge of 500 rupees will apply. Please keep sufficient balance in your account before the 8th.`),
+  c('E106', 'genuine', 'hospital_counter', 'en', 'caller', `Hello, I am from the Fortis hospital billing counter. Please deposit the advance for tomorrow's surgery at the counter on the ground floor. You can pay by card or cash there.`),
+  c('E107', 'genuine', 'police_visit', 'hinglish', 'caller', `Sir aapka phone jo chori hua tha wo mil gaya hai. Aap thane aakar apna bill aur ID dikhakar le jaiye.`),
+  c('E108', 'genuine', 'offer_letter', 'en', 'caller', `Your offer letter has been emailed to you. Note that the company does not charge any joining or training fees. In case anyone asks for money in our name, please report it to us.`),
+  c('E109', 'genuine', 'court_date', 'hi', 'caller', `आपकी सुनवाई की अगली तारीख बारह तारीख है। कृपया अपने वकील के साथ अदालत में समय पर पहुंचिए।`),
+  c('E111', 'genuine', 'telecom_kyc_store', 'en', 'caller', `This is Airtel. Your SIM KYC is due. Please visit any Airtel store with your Aadhaar and a photo. Do not share your documents over a call or on WhatsApp.`),
+  c('E112', 'genuine', 'power_cut_notice', 'en', 'caller', `The electricity board will carry out maintenance tomorrow from 10 to 2, so there will be a power cut in your area. Sorry for the inconvenience.`),
+  c('E113', 'genuine', 'sip_failed', 'hinglish', 'caller', `Madam aapki mutual fund SIP is mahine fail ho gayi hai kyunki account mein balance kam tha. Aap app se dobara try kar sakti hain.`),
+  c('E114', 'genuine', 'ride_notice', 'en', 'caller', `Hi, your Uber driver Sandeep is arriving in two minutes in a white Swift. Please share the ride PIN with him only after you sit in the cab.`),
+  c('E115', 'genuine', 'college_fee', 'hi', 'caller', `आपके बच्चे के कॉलेज की फीस जमा करने की आखिरी तारीख बीस तारीख है। कृपया कॉलेज के कार्यालय में जाकर जमा कर दें।`),
+  c('E116', 'genuine', 'delivery_notice', 'en', 'caller', `Thank you for your order. Your parcel will be delivered by 6 pm today. The delivery executive will ask for a code only when he is at your door.`),
+  c('E117', 'genuine', 'subsidy_credit', 'hinglish', 'caller', `Aapka gas subsidy 250 rupaye aapke bank account mein aa gayi hai. Koi dikkat ho to apne distributor se milen.`),
+  c('E118', 'genuine', 'tailor', 'en', 'caller', `Hello sir, I run the tailoring shop. Your suit is ready. You can pay by UPI when you collect it, or by cash.`),
+  c('E119', 'genuine', 'school', 'en', 'dialogue', `Teacher: Hello, this is from your daughter's school. Parent: Yes, is everything okay? Teacher: Yes, I only wanted to say she did very well in the math test. Parent: Thank you so much.`),
+  c('E120', 'genuine', 'hr_interview', 'hinglish', 'stt', `hello sir main tcs hr se bol rahi hoon aapka interview kal subah gyarah baje hai teams link aapki email par bheja gaya hai please time par join kar lijiye`),
+  c('E121', 'genuine', 'bank_branch', 'hi', 'stt', `हेलो सर आपका बैंक खाता अपडेट के लिए ब्रांच में बुलाया गया है अपना आधार और पैन लेकर आइए कोई पैसा नहीं लगेगा`),
+  c('E122', 'genuine', 'retelling', 'en', 'caller', `Mom, a bank person called asking for my OTP and said my account would be blocked. I told him I will go to the branch myself. Is that okay?`),
+  c('E123', 'genuine', 'asking_if_fraud', 'hinglish', 'caller', `Bhaiya mera Amazon order cancel ho gaya tha, refund ka message aaya hai. Kya ye sahi hai ya koi fraud?`),
+  c('E124', 'genuine', 'restaurant', 'en', 'caller', `Welcome back, sir. Your table is ready. May I take your order?`),
+  c('E125', 'genuine', 'scheme_advice', 'hi', 'caller', `प्रधानमंत्री किसान योजना की अगली किस्त जारी हो गई है। आप अपने बैंक पासबुक में जाँच कर सकते हैं। किसी लिंक पर क्लिक न करें और किसी को ओटीपी न बताएं।`),
+  c('E126', 'genuine', 'cashback', 'en', 'caller', `Your Amazon Pay balance has been topped up by 500 rupees as a cashback for last week's order. No action is needed.`),
+
+  // ---------------- ambiguous ----------------
+  c('E201', 'ambiguous', 'card_due', 'hinglish', 'caller', `Sir aapka credit card ka bill abhi tak pending hai. Kripya bank ke app se ya website se jaldi bhar dijiye, late fee lag rahi hai.`),
+  c('E202', 'ambiguous', 'family_money', 'hinglish', 'caller', `Beta, Rahul ko cab ke liye 500 rupaye bhej dena, wo kal wapas kar dega.`),
+  c('E203', 'ambiguous', 'collections', 'en', 'caller', `I am calling from the credit card collections team. Your account is 45 days overdue. Please settle the 18,400 rupees today through the app to avoid further charges.`),
+  c('E204', 'ambiguous', 'buyer_advance', 'en', 'caller', `Hi, I want to buy the bike you listed. I will pay a 5,000 advance by UPI now, please share your UPI ID so that I can send it.`),
+  c('E205', 'ambiguous', 'qr_payment', 'hinglish', 'caller', `Sir ek QR code bhej raha hoon, scan karke payment kar dijiye, order ka paisa abhi baaki hai.`),
+  c('E206', 'ambiguous', 'dob_check', 'en', 'caller', `Is this Mr. Verma? I am calling from the bank to verify your date of birth and registered email as part of a routine update.`),
+  c('E207', 'ambiguous', 'address_check', 'hi', 'caller', `आपके नाम पर कूरियर आया है, कृपया अपना पूरा पता और पिन कोड बताइए।`),
+  c('E208', 'ambiguous', 'donation', 'en', 'caller', `We are collecting donations for flood victims. You can send any amount to this UPI ID. Thank you for your support.`),
+];

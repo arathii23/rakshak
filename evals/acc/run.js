@@ -32,11 +32,18 @@ const onlyIds = opt('ids', null) ? String(opt('ids')).split(',') : null;
 loadDotEnv();
 if (live && !process.env.SARVAM_API_KEY) { console.error('SARVAM_API_KEY is not set (run scripts/set-key.sh). Nothing was called.'); process.exit(2); }
 
-async function loadSet(name) {
+async function loadOne(name) {
   if (name === 'dev') return (await import('../data/dev.js')).DEV;
+  if (name === 'dev2') return (await import('../data/dev2.js')).DEV2;
   if (name === 'test-a') return (await import('../data/test-a.js')).TEST_A;
   if (name === 'test-b') return JSON.parse(fs.readFileSync(path.join(evals, 'data', 'test-b.json'), 'utf8')).cases;
   throw new Error(`unknown set ${name}`);
+}
+// "dev,dev2" runs both development sets together; test sets are never mixed with them.
+async function loadSet(name) {
+  const parts = name.split(',').map((s) => s.trim()).filter(Boolean);
+  if (parts.length > 1 && parts.some((p) => p.startsWith('test'))) throw new Error('test sets are run on their own');
+  return (await Promise.all(parts.map(loadOne))).flat();
 }
 let cases = await loadSet(setName);
 if (onlyIds) cases = cases.filter((c) => onlyIds.includes(c.id));
@@ -162,7 +169,7 @@ if (best) {
   say('');
 }
 
-const out = path.join(evals, 'results', `accuracy-${setName}-${tag}.md`);
+const out = path.join(evals, 'results', `accuracy-${setName.replace(/,/g, '+')}-${tag}.md`);
 fs.writeFileSync(out, lines.join('\n') + '\n');
 console.log(`\nWrote ${path.relative(process.cwd(), out)}`);
 process.exit(anyMissing ? 3 : 0);

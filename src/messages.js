@@ -16,6 +16,10 @@ export const SIGNAL_LABELS = {
     en: 'Asks you to install an app or share your screen',
     hi: 'ऐप डालने या स्क्रीन शेयर करने को कहा जा रहा है',
   },
+  call_merge: {
+    en: 'Asks you to merge calls, which can let a scammer hear your bank\'s OTP call',
+    hi: 'कॉल मर्ज करने को कहा जा रहा है, जिससे ठग आपके बैंक का OTP वाला कॉल सुन सकते हैं',
+  },
   digital_arrest: {
     en: '"Digital arrest" is a well-known scam phrase',
     hi: '"डिजिटल अरेस्ट" ठगी में इस्तेमाल होने वाला जाना-पहचाना शब्द है',
@@ -47,7 +51,7 @@ export const SIGNAL_LABELS = {
 };
 
 // Which signal decides the "next step" wording (first match wins).
-const NEXT_PRIORITY = ['digital_arrest', 'arrest_threat', 'remote_app', 'secret_request', 'money_request', 'block_threat', 'secrecy'];
+const NEXT_PRIORITY = ['digital_arrest', 'arrest_threat', 'remote_app', 'call_merge', 'secret_request', 'money_request', 'block_threat', 'secrecy'];
 
 const NEXT = {
   digital_arrest: {
@@ -57,6 +61,10 @@ const NEXT = {
   remote_app: {
     en: 'Hang up. Do not install any app or share your screen. If you already did, uninstall it and call your bank.',
     hi: 'फ़ोन काट दें। कोई ऐप न डालें और स्क्रीन शेयर न करें। अगर कर चुके हैं तो ऐप हटाएँ और बैंक को फ़ोन करें।',
+  },
+  call_merge: {
+    en: 'Do not merge the call. Hang up. Scammers use call merging to listen in when your bank calls you with an OTP.',
+    hi: 'कॉल मर्ज न करें। फ़ोन काट दें। ठग कॉल मर्ज करवाकर तब सुन लेते हैं जब बैंक आपको OTP का कॉल करता है।',
   },
   secret_request: {
     en: 'Do not share the code or card details. Hang up and call your bank on the number printed on your card.',
@@ -114,6 +122,16 @@ export function templateExplanation(verdict, strongIds, flags, lang) {
     return lang === 'hi'
       ? `इन शब्दों में ठगी के संकेत दिखे: ${join(labels)}। असली बैंक या पुलिस फ़ोन पर ऐसा नहीं माँगते।`
       : `These words show warning signs: ${join(labels)}. Real banks and police do not ask for this over a phone call.`;
+  }
+  if (flags?.retelling) {
+    return lang === 'hi'
+      ? 'यह पहले हुए किसी कॉल की कहानी लगती है, अभी कोई आपसे कुछ माँग नहीं रहा। अगर कोई कोड या पैसे माँगे तो दोबारा जाँचें।'
+      : 'This reads like a story about an earlier call, not someone asking you for something now. If a caller does ask for codes or money, check again.';
+  }
+  if (flags?.meta && !flags?.advisory) {
+    return lang === 'hi'
+      ? 'ये शब्द ठगी के बारे में बताते हैं (खबर या सलाह), आपसे कुछ माँगते नहीं। इसका मतलब यह नहीं कि कोई कॉल सुरक्षित है।'
+      : 'These words talk about scams (news or advice) rather than ask you for something. This does not mean any call is safe.';
   }
   if (flags?.advisory) {
     return lang === 'hi'

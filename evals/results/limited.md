@@ -1,6 +1,6 @@
 # Eval results: LIMITED (rules only, no AI)
 
-Run: 2026-11-20T17:50:07.255Z · Cases: 68 · **Passed: 68/68**
+Run: 2026-11-20T19:52:42.355Z · Cases: 68 · **Passed: 68/68**
 
 All case texts are synthetic (written by Claude for testing), not real calls.
 
@@ -51,7 +51,7 @@ All case texts are synthetic (written by Claude for testing), not real calls.
 | V04 | variant-scam | likely_scam / warning_signs | likely_scam | “bank”, “link par click” | pass |
 | V05 | variant-scam | likely_scam / warning_signs | warning_signs | “सिम कार्ड कल से बंद हो जाएगा” | pass |
 | V06 | variant-scam | likely_scam / warning_signs | warning_signs | “OTP on your phone. Read it out”, “right now” | pass |
-| V07 | variant-scam | likely_scam / warning_signs | no_clear_signs | — | known limit (keyword rules cannot catch this; AI expected to) |
+| V07 | variant-scam | likely_scam / warning_signs | warning_signs | “Tell me the six digit” | pass |
 | V08 | variant-scam | likely_scam / warning_signs | warning_signs | “abhi”, “account band ho jayega” | pass |
 | V09 | variant-scam | likely_scam | likely_scam | “money laundering case. Transfer the”, “RBI”, “safe account” | pass |
 | V10 | variant-scam | likely_scam / warning_signs | warning_signs | “SIM will be disconnected”, “officer” | pass |

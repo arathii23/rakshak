@@ -6,13 +6,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { DEV } from '../evals/data/dev.js';
+import { DEV2 } from '../evals/data/dev2.js';
 import { TEST_A } from '../evals/data/test-a.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const testBFile = path.join(here, '..', 'evals', 'data', 'test-b.json');
 const TEST_B = fs.existsSync(testBFile) ? JSON.parse(fs.readFileSync(testBFile, 'utf8')).cases : [];
 
-const SETS = { dev: DEV, 'test-a': TEST_A, ...(TEST_B.length ? { 'test-b': TEST_B } : {}) };
+const SETS = { dev: DEV, dev2: DEV2, 'test-a': TEST_A, ...(TEST_B.length ? { 'test-b': TEST_B } : {}) };
 const LABELS = ['scam', 'genuine', 'ambiguous'];
 const LANGS = ['en', 'hinglish', 'hi'];
 const STYLES = ['caller', 'dialogue', 'stt', 'msg', 'chunk'];
