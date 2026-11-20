@@ -177,7 +177,13 @@ export function createApp({ env = process.env, fetchImpl = fetch, now = Date.now
         const out = { ai: Boolean(sarvam), maxAudioSeconds: cfg.maxAudioSeconds, maxTextChars: cfg.maxTextChars };
         // Off by default. When DEBUG_IP_DIAG=1, reports only HOW MANY proxy entries arrive (never the addresses),
         // so the right TRUST_PROXY_HOPS can be measured on the real host.
-        if (env.DEBUG_IP_DIAG === '1') out.proxyEntries = String(req.headers['x-forwarded-for'] || '').split(',').filter((x) => x.trim()).length;
+        if (env.DEBUG_IP_DIAG === '1') {
+          const entries = String(req.headers['x-forwarded-for'] || '').split(',').map((x) => x.trim()).filter(Boolean);
+          out.proxyEntries = entries.length;
+          // The caller may pass their own address as ?me=; we report only which position from the right matches it.
+          const me = url.searchParams.get('me');
+          if (me) { const i = entries.lastIndexOf(me); out.proxyMatchFromRight = i < 0 ? 0 : entries.length - i; } // 0 = no match
+        }
         return send(res, 200, out);
       }
       if (url.pathname.startsWith('/api/live/')) return await handleLive(req, res, ip, url);
