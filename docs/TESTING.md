@@ -10,7 +10,7 @@ Covers: rule detection and false positives (single words, "never share your OTP"
 
 ## 2. Eval cases: 68 synthetic cases through the real pipeline
 
-Groups: scams in English, Hinglish and Hindi; genuine calls (delivery, bank, service, family, official); advice such as "never share your OTP"; single keywords alone; unclear/very short input; 24 differently worded variants.
+Groups: scams in English, Hinglish and Hindi; genuine calls (delivery, bank, service, family, official); advice such as "never share your OTP"; single keywords alone; unclear/very short input; 29 differently worded variants (24, plus 5 speech-to-text-style ones added later).
 
 | Mode | Command | Result file | Result |
 |---|---|---|---|
@@ -27,7 +27,7 @@ Groups: scams in English, Hinglish and Hindi; genuine calls (delivery, bank, ser
 5. After parent-phone mode was added, five speech-to-text-style cases (V25 to V29: letter-by-letter "O T P", Hindi-script "ओ टी पी", "UPI PIN daliye" refund scam, a family chat, a retelling of a bank advisory) were written after probing the rules with such text. The probe found the rules missed "O T P" spelled with spaces and "PIN daliye"; both were fixed. Rules-only 68/68, live 68/68.
    - V29 ("the bank said not to tell anyone, so I told no one") is only passed because its expectation allows "some warning signs"; the app does flag the quoted phrase "kisi ko mat batana" in that retelling. That is a mild false positive and is not fixed.
 
-**Caveat:** the fixes were made after seeing these exact failures, so the 63/63 is not an unbiased accuracy measure. It shows the known failure modes are handled, not that the app is accurate on real calls. The case set was written by the same author as the rules (see `evals/results/limited-run1-before-fixes.md` for the first-run failures on the second set).
+**Caveat:** the fixes were made after seeing these exact failures, so the pass rates above are not an unbiased accuracy measure. It shows the known failure modes are handled, not that the app is accurate on real calls. The case set was written by the same author as the rules (see `evals/results/limited-run1-before-fixes.md` for the first-run failures on the second set).
 
 ## 3. Real-service smoke tests (one run each, on 2026-11-20)
 
@@ -52,7 +52,7 @@ Run against the fake Sarvam on localhost with a **synthetic tone as a fake micro
 - Real microphone capture on real Android and iPhone browsers (the development browser blocks the mic; the encoder is unit-tested).
 - Audible quality of read-aloud audio in Hindi; STT accuracy on noisy, accented or compressed speakerphone audio.
 - Hindi UI and explanation wording reviewed by a native speaker (written with AI help).
-- Hosting provider's proxy headers: whether each visitor gets their own rate-limit bucket (checked after deploy, see section 5).
+- Whether two different real visitors get separate rate-limit buckets on the host (the proxy headers were measured, see section 5, but only from one address).
 - Scam-detection accuracy on real calls; false-positive rate on real calls. No percentages are claimed.
 
 ## 5. Deployment checks
@@ -67,12 +67,13 @@ Public URL: https://rakshak-u47o.onrender.com (Render free tier). Checked on 202
 | Security headers | CSP, nosniff, no-referrer | present |
 | Which `X-Forwarded-For` entry is the real visitor? | measured, not guessed | Render sends 3 entries; the visitor's own address (compared with my public IP) is **3rd from the right**. Adding forged entries only lengthens the list on the left, so the 3rd from the right stays the real one. Set `TRUST_PROXY_HOPS=3` |
 | After the parent-phone update: home page has the new card; a session created with no code, two real speech clips uploaded, then ended | alert rises to very likely a scam; text wiped at end | warning signs, then very likely a scam; `latest.text` empty after end |
+| Stale browser cache after an update | New HTML never paired with old scripts | **Found a bug here:** the first deploys served scripts with a one-hour cache, and a browser that had kept them showed raw labels such as `soloTitle`. Fixed: files always revalidate and every script/style URL has a `?v=` tag (unit test `test/assets.test.js`). Re-checked on the live site afterwards, in the same browser that had the stale files: no raw labels on the home, family and parent pages in English or Hindi |
 | Per-visitor limit on the live host (10 wrong live-session codes per 10 minutes) | 11th request blocked | 404 x10, then 429; forged `X-Forwarded-For` headers did not get past it |
 
 Not checked: that two different real visitors get separate buckets (I only had one address); behaviour with the service asleep for a long time other than a first-visit delay of up to about a minute; the app on real phones.
 
 The proxy measurement used a temporary flag (`DEBUG_IP_DIAG`), now set to 0.
 
-## 6. Cost arithmetic (default caps, worst case per day)
+## 6. Cost caps (not measured spend)
 
 Daily caps: 250 AI checks, 1200 seconds of speech-to-text, 8000 characters of read-aloud. These are caps, not measured spend; the real hard stop is the Sarvam credit balance. Check actual rates on Sarvam's pricing page before relying on any rupee figure.

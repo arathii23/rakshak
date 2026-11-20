@@ -1,5 +1,7 @@
 # Rakshak — Scam Call Assistant
 
+**Live app (no login):** https://rakshak-u47o.onrender.com — runs on a free server that sleeps when idle, so the first visit can take up to a minute.
+
 Check what a caller said. Type it, or record a short voice clip, in **Hindi, Hinglish or English**.
 Rakshak points out the caller's **exact suspicious words**, explains in **Hindi or English**, and gives **one practical next step**.
 
