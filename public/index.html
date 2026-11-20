@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#0f5e57">
+  <title>Rakshak — Scam Call Assistant</title>
+  <meta name="description" content="Rakshak checks what a caller said (Hindi, Hinglish or English), points out suspicious words, and suggests one clear next step. It does not listen to or block calls.">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3z"/><path class="tick" d="m8.6 12.2 2.4 2.4 4.6-4.8"/></svg>
+      <div>
+        <h1 data-i18n="appName">Rakshak</h1>
+        <p class="sub" data-i18n="appSub">Scam Call Assistant</p>
+      </div>
+    </div>
+    <div class="seg" role="group" aria-label="Language">
+      <button type="button" class="seg-btn" data-lang="hi" lang="hi">हिंदी</button>
+      <button type="button" class="seg-btn" data-lang="en">English</button>
+    </div>
+  </header>
+
+  <main>
+    <p class="scope" data-i18n="scope">Rakshak checks the words you give it. It does not listen to your calls, record them automatically, or block calls.</p>
+
+    <section class="card" aria-labelledby="in-label">
+      <label id="in-label" for="text" class="label" data-i18n="inLabel">What did the caller say?</label>
+      <textarea id="text" rows="6" maxlength="1000" autocomplete="off" autocapitalize="sentences" spellcheck="false" data-i18n-ph="inPlaceholder" placeholder="Type or paste the caller's words. Hindi, Hinglish or English."></textarea>
+      <div class="row between">
+        <span id="count" class="muted small" aria-live="off">0 / 1000</span>
+        <button type="button" id="clear" class="link" data-i18n="clear">Clear</button>
+      </div>
+      <p id="reviewNote" class="notice hidden" role="status" data-i18n="reviewNote">Please read the text and fix any mistakes before checking.</p>
+      <div class="actions">
+        <button type="button" id="check" class="btn primary"><span data-i18n="check">Check</span></button>
+        <button type="button" id="speak" class="btn secondary"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span data-i18n="speakInstead">Speak instead</span></button>
+      </div>
+      <p class="muted small" data-i18n="tip">Tip: the microphone key on your phone keyboard also lets you speak instead of typing. Do not type OTPs, PINs, card numbers or passwords.</p>
+    </section>
+
+    <section class="card" aria-labelledby="ex-title">
+      <h2 id="ex-title" data-i18n="exTitle">Try an example</h2>
+      <p class="muted small" data-i18n="exSub">These texts were written for testing. They are not real calls. Each one is checked by the real service.</p>
+      <div id="examples" class="chips"></div>
+    </section>
+
+    <section id="out" class="out" aria-live="polite" aria-busy="false"></section>
+
+    <section class="card" aria-labelledby="hist-title">
+      <div class="row between">
+        <h2 id="hist-title" data-i18n="histTitle">Recent checks</h2>
+        <button type="button" id="histClear" class="link hidden" data-i18n="histClear">Delete all</button>
+      </div>
+      <p class="muted small" data-i18n="histSub">Saved only on this phone. You can delete them any time.</p>
+      <ul id="hist" class="hist"></ul>
+      <p id="histEmpty" class="muted" data-i18n="histEmpty">Nothing saved yet.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p data-i18n="foot1">Rakshak cannot confirm whether a call is real or fake, and "no clear warning signs" never means a call is safe. If you are unsure, hang up and call back on an official number.</p>
+    <p data-i18n="foot2">Your text or recording is sent to Sarvam AI to be checked. Rakshak does not store it on its server, and keeps recent checks only on your device.</p>
+    <p class="muted small" data-i18n="foot3">Built by arathii23 with help from Claude (AI). Not an official service of any bank or government body.</p>
+  </footer>
+
+  <dialog id="rec" aria-labelledby="rec-title">
+    <div class="sheet" data-step="intro">
+      <div class="step step-intro">
+        <h2 id="rec-title" data-i18n="recTitle">Record the caller's words</h2>
+        <ul class="plain">
+          <li data-i18n="rec1">Your recording (up to 20 seconds) is sent to our server and then to Sarvam AI, which turns it into text.</li>
+          <li data-i18n="rec2">We delete it straight after. We do not keep recordings or text on our server.</li>
+          <li data-i18n="rec3">You will see the text and can fix it before anything is checked.</li>
+        </ul>
+        <p class="notice" data-i18n="recDevice"><strong>During a phone call:</strong> this phone cannot record the other person. To record a call on speaker, use a second device (another phone or a laptop) next to the speaker. Rakshak never listens in the background.</p>
+        <div class="actions">
+          <button type="button" id="recStart" class="btn primary" data-i18n="recStart">Start recording</button>
+          <button type="button" id="recCancel1" class="btn ghost" data-i18n="cancel">Cancel</button>
+        </div>
+      </div>
+      <div class="step step-rec">
+        <h2 data-i18n="recNow">Recording… speak now</h2>
+        <div class="timer" id="recTimer">0:00</div>
+        <div class="meter" aria-hidden="true"><div id="recLevel"></div></div>
+        <p class="muted small" id="recLimit"></p>
+        <div class="actions">
+          <button type="button" id="recStop" class="btn danger" data-i18n="recStop">Stop</button>
+          <button type="button" id="recCancel2" class="btn ghost" data-i18n="cancel">Cancel</button>
+        </div>
+      </div>
+      <div class="step step-work">
+        <h2 data-i18n="recWorking">Turning your voice into text…</h2>
+        <div class="spinner" aria-hidden="true"></div>
+      </div>
+    </div>
+  </dialog>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
