@@ -38,11 +38,15 @@ export function createSarvam({ apiKey, baseUrl = 'https://api.sarvam.ai', fetchI
   }
 
   return {
-    /** Chat completion → message content string. */
-    async chat({ system, user, schema, maxTokens = 450 }) {
+    /**
+     * Chat completion → message content string.
+     * `onUsage(usage, meta)` is optional and only used by the accuracy evaluation to count tokens; `usage` holds
+     * numbers only (never text). `temperature` defaults to 0.1.
+     */
+    async chat({ system, user, schema, maxTokens = 450, temperature = 0.1, onUsage }) {
       const body = {
         model: 'sarvam-105b-conversations',
-        temperature: 0.1,
+        temperature,
         max_tokens: maxTokens,
         messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
       };
@@ -52,6 +56,9 @@ export function createSarvam({ apiKey, baseUrl = 'https://api.sarvam.ai', fetchI
       }, timeouts.chat ?? 15000, async (res) => {
         const j = await res.json();
         const c = j?.choices?.[0]?.message?.content;
+        if (typeof onUsage === 'function') {
+          try { onUsage(j?.usage ?? null, { finish: j?.choices?.[0]?.finish_reason ?? null }); } catch { /* accounting must never break a check */ }
+        }
         if (typeof c !== 'string' || !c.trim()) throw new SarvamError('bad_response');
         return c;
       });
