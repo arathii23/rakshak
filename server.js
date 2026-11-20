@@ -163,7 +163,7 @@ export function createApp({ env = process.env, fetchImpl = fetch, now = Date.now
     if (!file.startsWith(PUBLIC + path.sep)) return err(res, 404, 'not_found');
     fs.readFile(file, (e, data) => {
       if (e) return err(res, 404, 'not_found');
-      send(res, 200, data, { 'content-type': MIME[path.extname(file)] || 'application/octet-stream', 'cache-control': p.endsWith('.html') ? 'no-cache' : 'public, max-age=3600' });
+      send(res, 200, data, { 'content-type': MIME[path.extname(file)] || 'application/octet-stream', 'cache-control': 'no-cache' }); // always revalidate: a stale script next to fresh HTML breaks the page after an update
     });
   }
 

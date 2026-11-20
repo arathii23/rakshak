@@ -12,7 +12,9 @@ const t = translator(() => lang, LSTR, STR);
 const app = document.getElementById('app');
 const overlay = document.getElementById('overlay');
 
-const code = (location.hash || '').replace('#', '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
+let code = (location.hash || '').replace('#', '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
+// No code in the link = the parent opened Rakshak on their own phone: a session is created when they tap Start.
+const solo = code.length !== 6;
 let recorder = null, wakeLock = null, queue = Promise.resolve(), pending = 0, lastSeq = 0, view = 'setup', trouble = false, audioEl = null;
 let levelEl = null;
 
@@ -36,13 +38,13 @@ let msg = '';
 const card = (...k) => { const c = el('section', 'card'); c.append(...k); return c; };
 
 function renderSetup() {
-  const ul = el('ul', 'plain'); for (const k of ['listenStep1', 'listenStep2', 'listenStep3']) ul.append(el('li', '', t(k)));
+  const ul = el('ul', 'plain'); for (const k of (solo ? ['soloStep1', 'soloStep2', 'soloStep3'] : ['listenStep1', 'listenStep2', 'listenStep3'])) ul.append(el('li', '', t(k)));
   const consent = el('input'); consent.type = 'checkbox';
-  const lab = el('label', 'check'); lab.append(consent, el('span', '', t('listenConsent')));
+  const lab = el('label', 'check'); lab.append(consent, el('span', '', t(solo ? 'soloConsent' : 'listenConsent')));
   const btn = el('button', 'btn primary big', t('listenStart')); btn.type = 'button'; btn.disabled = true;
   consent.addEventListener('change', () => { btn.disabled = !consent.checked; });
   btn.addEventListener('click', start);
-  const kids = [el('h2', '', t('listenTitle')), el('p', '', t('listenIntro')), ul, el('p', 'muted small', t('listenData')), lab, btn];
+  const kids = [el('h2', '', t(solo ? 'soloTitle' : 'listenTitle')), el('p', '', t(solo ? 'soloIntro' : 'listenIntro')), ul, el('p', 'muted small', t(solo ? 'soloData' : 'listenData')), lab, btn];
   if (msg) { const b = el('p', 'banner error', msg); b.setAttribute('role', 'alert'); kids.push(b); }
   app.append(card(...kids));
 }
@@ -52,8 +54,13 @@ function renderOn() {
   const stop = el('button', 'btn danger big', t('listenStop')); stop.type = 'button'; stop.addEventListener('click', () => stopAll(true));
   const kids = [
     el('h2', 'listening', t('listenOn')), meter, el('p', 'muted small', t('listenLevel')),
-    el('p', 'notice', t('listenWatching', { c: code })),
   ];
+  if (!solo) kids.push(el('p', 'notice', t('listenWatching', { c: code })));
+  else {
+    const link = `${location.origin}/guard#${code}`;
+    const wa = el('a', 'btn secondary', t('soloShareWa')); wa.href = `https://wa.me/?text=${encodeURIComponent(t('soloWaMsg', { link }))}`; wa.target = '_blank'; wa.rel = 'noopener';
+    kids.push(el('p', 'notice', t('soloShareBody')), wa);
+  }
   if (trouble) kids.push(el('p', 'banner', t('listenTrouble')));
   kids.push(stop);
   app.append(card(...kids));
@@ -64,9 +71,21 @@ async function start() {
   msg = '';
   if (!navigator.mediaDevices?.getUserMedia) { msg = t('listenNoMic'); return render(); }
   unlockAudio();
+  if (solo && code.length !== 6) {
+    try {
+      const r = await fetch('/api/live/create', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ lang }) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) { const c = d?.error?.code; msg = t(c === 'busy' ? 'errBusy' : c === 'rate_limited' ? 'errRate' : c === 'not_configured' ? 'errConfig' : 'errGeneric'); return render(); }
+      code = d.code;
+    } catch { msg = t('errNet'); return render(); }
+  }
   try {
     recorder = await startChunkRecorder({ chunkSeconds: 8, onChunk: upload, onLevel: (l) => { if (levelEl) levelEl.style.width = `${Math.max(3, Math.round(l * 100))}%`; } });
-  } catch (e) { msg = t(e?.name === 'NotAllowedError' ? 'listenDenied' : 'listenNoMic'); return render(); }
+  } catch (e) {
+    msg = t(e?.name === 'NotAllowedError' ? 'listenDenied' : 'listenNoMic');
+    if (solo) { fetch('/api/live/end', { method: 'POST', headers: { 'x-session-code': code } }).catch(() => {}); code = ''; } // do not leave an unused session open
+    return render();
+  }
   try { wakeLock = await navigator.wakeLock?.request('screen'); } catch { /* optional */ }
   view = 'on'; trouble = false; render();
 }
@@ -129,7 +148,7 @@ async function speak(text) {
 // ---------- boot ----------
 (async function init() {
   chrome();
-  if (code.length !== 6) { view = 'badlink'; return render(); }
+  if (solo) return render();
   try {
     const r = await fetch(`/api/live/state?code=${code}`);
     if (!r.ok) { view = 'badlink'; return render(); }

@@ -23,20 +23,20 @@ If Sarvam is down, out of credit, slow, or a limit is hit, you get a clearly lab
 
 ### Live Guard (checking a call while it happens)
 
-Built for children protecting their parents.
+The main setup is **on the parent's own phone**. A family member can optionally watch alerts too.
 
-1. The family member opens `/guard`, ticks that the parent knows and agrees, and gets a 6-character code and a WhatsApp link.
-2. The parent opens the link (`/listen#CODE`) on the phone being protected, or on a second device next to it, ticks consent and taps **Start listening**. When an unknown number calls, they take the call on speaker.
-3. The page sends ~8-second audio clips to the server. Sarvam turns them into text, the rules (and, on some clips, the AI) check the rolling transcript, and the alert level only ever goes **up** during a call.
-4. The family sees live alerts, highlighted words and one next step. The parent's screen shows a full-screen warning with beeps and vibration, and a spoken warning for "very likely a scam".
+1. When an unknown number calls, the parent opens Rakshak (`/listen`), ticks that they understand the microphone will listen, and taps **Start listening**. Then they put the call on speaker. They have to tap Start themselves.
+2. The page sends ~8-second audio clips to the server. Sarvam turns them into text, the rules (and, on some clips, the AI) check the rolling transcript, and the alert level only ever goes **up** during a call.
+3. The parent's screen shows a full-screen warning with beeps and vibration, and a spoken warning for "very likely a scam".
+4. Optional: the parent taps "Send watch link on WhatsApp"; a family member opens `/guard#CODE` and sees the same alerts, highlighted words and next step live. A family member can also start from `/guard`, create a code, and send the parent a `/listen#CODE` link (this is also the route for a second device next to the phone).
 5. Everything is held in server memory only. A session is wiped when it ends, after 15 minutes without audio, or after 45 minutes. Nothing is saved or logged.
 
 **What this needs and what is not possible (honest limits):**
 
-- The listener page must be opened by a person and tapped Start. A web page **cannot** detect an incoming call, check whether the number is in the contacts, or start by itself, so "turn on automatically for unknown numbers" is **not built**. It would need a native Android app and is listed as future work.
-- A phone usually cannot record the other person during a normal call; many phones mute the microphone for apps. Using the **same phone** on speaker is therefore **experimental and untested on real calls**. A **second device** next to the speaker is the setup this project is designed around, but that has also not been tried with a real call yet.
+- A web page **cannot** detect an incoming call, check whether the number is in the contacts, or start by itself, so "turn on automatically for numbers not in contacts" is **not built**. It would need a native Android app and is listed as future work.
+- A phone usually cannot record the other person during a normal call; many phones mute the microphone for apps. Using the **same phone** on speaker is therefore **untested on real calls**. If the sound bar does not move while the caller talks, that phone cannot hear the call; a second device next to the phone is the fallback, and it has also not been tried on a real call.
 - iOS cannot capture call audio at all.
-- Limits: 15 minutes of speech per session, 20 live sessions at once, 4 new codes per hour per person.
+- Limits: 15 minutes of speech per session, 20 live sessions at once, 4 new sessions per hour per person.
 
 ## Run locally
 

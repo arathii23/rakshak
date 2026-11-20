@@ -13,7 +13,7 @@ const re = (src) => new RegExp(src, 'giu');
 
 // ---------- vocabulary ----------
 const SECRET_NOUN = [
-  String.raw`o\.?t\.?p\.?`, String.raw`one[- ]time[- ]pass(?:word|code)`, String.raw`pin(?!\s?code)`,
+  String.raw`o\.?\s?t\.?\s?p\.?`, String.raw`one[- ]time[- ]pass(?:word|code)`, String.raw`pin(?!\s?code)`,
   String.raw`upi\s+pin`, String.raw`atm\s+pin`, 'cvv', 'cvc', 'password', 'passcode',
   String.raw`card\s+(?:number|no\.?|details?)`, String.raw`verification\s+code`, String.raw`security\s+code`,
   String.raw`net\s?banking\s+(?:id|password)`, String.raw`aa?dh?a+r\s+(?:number|otp)`,
@@ -32,6 +32,7 @@ const DEMAND_AFTER = [
   String.raw`(?:confirm|verify|enter)\s*(?:kar|karo|kijiye)`, String.raw`read\s*(?:it\s+|that\s+|this\s+)?out`, String.raw`bata\s+(?:do|dijiye|dena|dijiyega)`,
   'बताओ', 'बताइए', 'बताइये', 'बताएं', 'बताएँ', String.raw`बता\s+दो`, String.raw`बता\s+दीजिए`, 'बताना', 'बोलो',
   String.raw`बोल\s+दो`, String.raw`शेयर\s+(?:करो|कीजिए|करें|कर\s+दो)`, 'भेजो', 'भेजिए', String.raw`भेज\s+दो`,
+  String.raw`d[aā]{1,2}l(?:o|iye|iyie|na|ein|en|do|dijiye|dijiyega)`, 'डालिये',
   'दो', 'दीजिए', 'दीजिये', 'दें', 'देना', 'डालो', 'डालिए', 'चाहिए', String.raw`मांग\w*`, String.raw`पूछ\w*`,
 ].join('|');
 

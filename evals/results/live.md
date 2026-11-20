@@ -1,6 +1,6 @@
 # Eval results: LIVE (rules + Sarvam AI)
 
-Run: 2026-11-20T17:22:22.874Z · Cases: 63 · **Passed: 63/63**
+Run: 2026-11-20T17:50:06.771Z · Cases: 68 · **Passed: 68/68**
 
 All case texts are synthetic (written by Claude for testing), not real calls.
 
@@ -15,12 +15,12 @@ All case texts are synthetic (written by Claude for testing), not real calls.
 | S07 | scam-hinglish | likely_scam | likely_scam | “police”, “Abhi”, “50000 rupaye is account mein transfer kar do”, “kisi ko mat batana” | pass |
 | S08 | scam-hinglish | likely_scam / warning_signs | likely_scam | “TRAI”, “number band ho jayega”, “Abhi”, “Aadhaar number bataiye” | pass |
 | S09 | scam-hinglish | likely_scam / warning_signs | likely_scam | “bijli ka connection aaj raat 9:30 baje kat”, “Turant”, “UPI se payment kijiye” | pass |
-| S10 | scam-hinglish | likely_scam / warning_signs | likely_scam | “Bank”, “aapka KYC update karna hai”, “OTP aaya hai wo bata dijiye”, “abhi” | pass |
+| S10 | scam-hinglish | likely_scam / warning_signs | likely_scam | “Bank”, “OTP aaya hai wo bata dijiye”, “abhi” | pass |
 | S11 | scam-hinglish | likely_scam / warning_signs | likely_scam | “Guaranteed returns”, “paisa double”, “Aaj hi”, “10000 rupaye jama kijiye” | pass |
 | S12 | scam-hindi | likely_scam | likely_scam | “सीबीआई”, “आपके नाम पर केस”, “अभी”, “ओटीपी बताइए” | pass |
-| S13 | scam-hindi | likely_scam | likely_scam | “एनीडेस्क”, “ऐप डाउनलोड कीजिए”, “ताकि मैं आपका खाता ठीक कर सकूँ” | pass |
+| S13 | scam-hindi | likely_scam | likely_scam | “एनीडेस्क”, “ऐप डाउनलोड कीजिए” | pass |
 | S14 | scam-hindi | likely_scam | likely_scam | “बैंक”, “खाता आज बंद हो जाएगा”, “कार्ड नंबर और सीवीवी बताइए”, “किसी को मत बताना” | pass |
-| S15 | scam-hindi | likely_scam / warning_signs | likely_scam | “अभी”, “वीडियो कॉल पर रहिए”, “डिजिटल अरेस्ट” | pass |
+| S15 | scam-hindi | likely_scam / warning_signs | likely_scam | “अभी”, “डिजिटल अरेस्ट” | pass |
 | G01 | genuine-advisory | no_clear_signs | no_clear_signs | “Bank” | pass |
 | G02 | genuine-advisory | no_clear_signs | no_clear_signs | “bank” | pass |
 | G03 | genuine-advisory | no_clear_signs | no_clear_signs | “बैंक” | pass |
@@ -38,8 +38,8 @@ All case texts are synthetic (written by Claude for testing), not real calls.
 | G15 | genuine-family | no_clear_signs / warning_signs | warning_signs | “paise chahiye the, 500 rupaye bhej dena” | pass |
 | K01 | keyword-alone | not_enough_info | not_enough_info | — | pass |
 | K02 | keyword-alone | not_enough_info | not_enough_info | “police” | pass |
-| K03 | keyword-alone | no_clear_signs / not_enough_info | no_clear_signs | “police”, “bank”, “urgent” | pass |
-| K04 | keyword-alone | no_clear_signs / not_enough_info | no_clear_signs | “my OTP”, “police” | pass |
+| K03 | keyword-alone | no_clear_signs / not_enough_info | no_clear_signs | “OTP”, “police”, “bank”, “urgent” | pass |
+| K04 | keyword-alone | no_clear_signs / not_enough_info | no_clear_signs | “police” | pass |
 | K05 | keyword-alone | no_clear_signs / not_enough_info | not_enough_info | “पुलिस”, “बैंक” | pass |
 | U01 | unclear | not_enough_info / no_clear_signs | not_enough_info | — | pass |
 | U02 | unclear | not_enough_info / no_clear_signs | not_enough_info | “bank” | pass |
@@ -65,7 +65,12 @@ All case texts are synthetic (written by Claude for testing), not real calls.
 | V18 | variant-genuine | no_clear_signs | no_clear_signs | — | pass |
 | V19 | variant-genuine | no_clear_signs | no_clear_signs | — | pass |
 | V20 | variant-genuine | no_clear_signs | no_clear_signs | “police” | pass |
-| V21 | variant-genuine | no_clear_signs / not_enough_info | no_clear_signs | — | pass |
+| V21 | variant-genuine | no_clear_signs / not_enough_info | not_enough_info | — | pass |
 | V22 | variant-genuine | no_clear_signs | no_clear_signs | — | pass |
 | V23 | variant-edge | not_enough_info | not_enough_info | — | pass |
 | V24 | variant-edge | not_enough_info | not_enough_info | — | pass |
+| V25 | variant-stt | likely_scam / warning_signs | likely_scam | “O T P bataiye”, “abhi”, “account block ho jayega” | pass |
+| V26 | variant-stt | likely_scam / warning_signs | likely_scam | “abhi”, “UPI PIN daliye” | pass |
+| V27 | variant-stt | likely_scam / warning_signs | likely_scam | “ओ टी पी बताइए”, “जल्दी”, “बैंक”, “खाता बंद हो जाएगा” | pass |
+| V28 | variant-stt | no_clear_signs | no_clear_signs | — | pass |
+| V29 | variant-stt | no_clear_signs / not_enough_info / warning_signs | warning_signs | “bank”, “kisi ko mat batana”, “kisi ko nahi bataya” | pass |

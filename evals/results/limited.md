@@ -1,6 +1,6 @@
 # Eval results: LIMITED (rules only, no AI)
 
-Run: 2026-11-20T17:22:39.685Z · Cases: 63 · **Passed: 63/63**
+Run: 2026-11-20T17:50:07.255Z · Cases: 68 · **Passed: 68/68**
 
 All case texts are synthetic (written by Claude for testing), not real calls.
 
@@ -69,3 +69,8 @@ All case texts are synthetic (written by Claude for testing), not real calls.
 | V22 | variant-genuine | no_clear_signs | no_clear_signs | — | pass |
 | V23 | variant-edge | not_enough_info | not_enough_info | — | pass |
 | V24 | variant-edge | not_enough_info | not_enough_info | — | pass |
+| V25 | variant-stt | likely_scam / warning_signs | likely_scam | “O T P bataiye”, “abhi”, “account block ho jayega” | pass |
+| V26 | variant-stt | likely_scam / warning_signs | warning_signs | “abhi”, “UPI PIN daliye” | pass |
+| V27 | variant-stt | likely_scam / warning_signs | likely_scam | “ओ टी पी बताइए”, “जल्दी”, “बैंक”, “खाता बंद हो जाएगा” | pass |
+| V28 | variant-stt | no_clear_signs | no_clear_signs | — | pass |
+| V29 | variant-stt | no_clear_signs / not_enough_info / warning_signs | warning_signs | “bank”, “kisi ko mat batana”, “kisi ko nahi bataya” | pass |

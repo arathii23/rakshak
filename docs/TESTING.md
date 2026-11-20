@@ -4,18 +4,18 @@ All test texts are **synthetic**, written by Claude for testing. None are real c
 
 ## 1. Automated tests: `npm test`
 
-Stubbed Sarvam, no network, no credits. **Result of the latest run: 78 tests, 78 pass, 0 fail** (`evals/results/unit-tests-run.txt`).
+Stubbed Sarvam, no network, no credits. **Result of the latest run: 79 tests, 79 pass, 0 fail** (`evals/results/unit-tests-run.txt`).
 
 Covers: rule detection and false positives (single words, "never share your OTP", doorstep delivery OTP, official-channel reminders); AI merge guards (AI cannot reach "very likely a scam" alone, cannot raise a verdict without a quote that exists in the text, cannot lower a rule verdict, one- or two-word AI quotes cannot raise a verdict, wrong-script explanation falls back); empty/invalid/too-long input; service failures (HTTP 500, 503, 429, 402, 401, 403, network failure, malformed model output) producing a labelled limited check; masking of long digit strings before they reach the AI; no "safe" verdict and no percentages; recording validation (empty, silent, too short, too long) **before** credits are spent; rate and daily limits; the server log containing no text, audio or IPs; WAV encoder against the server validator; Live Guard sessions (create, chunking, alert only goes up, caps, wipe on end/idle, viewer limits, bad-code limits, SSE refusal).
 
-## 2. Eval cases: 63 synthetic cases through the real pipeline
+## 2. Eval cases: 68 synthetic cases through the real pipeline
 
 Groups: scams in English, Hinglish and Hindi; genuine calls (delivery, bank, service, family, official); advice such as "never share your OTP"; single keywords alone; unclear/very short input; 24 differently worded variants.
 
 | Mode | Command | Result file | Result |
 |---|---|---|---|
-| Limited (rules only, no AI) | `npm run eval` | `evals/results/limited.md` | 63/63 as expected; V07 is a **known limit** (a paraphrase the keyword rules cannot catch) and is counted as expected, not as a pass of the rules |
-| Real Sarvam AI + rules | `npm run eval:live` | `evals/results/live.md` | **Latest run 63/63.** See history below |
+| Limited (rules only, no AI) | `npm run eval` | `evals/results/limited.md` | 68/68 as expected; V07 is a **known limit** (a paraphrase the keyword rules cannot catch) and is counted as expected, not as a pass of the rules |
+| Real Sarvam AI + rules | `npm run eval:live` | `evals/results/live.md` | **Latest run 68/68.** See history below |
 
 **History of live runs (kept honest, the AI is not deterministic):**
 
@@ -23,6 +23,9 @@ Groups: scams in English, Hinglish and Hindi; genuine calls (delivery, bank, ser
 2. Fix: added a prompt line that an in-person visit/ID request with no demand or threat is normal; and two code guards (with no rule signal, an AI verdict is ignored for texts under 6 words, and ignored when all its quotes are only one or two words).
 3. Second run: 62/63 (K04 flagged on the quotes "my OTP" and "police"); fixed by the one-or-two-word guard.
 4. Two further runs: 63/63 each.
+
+5. After parent-phone mode was added, five speech-to-text-style cases (V25 to V29: letter-by-letter "O T P", Hindi-script "ओ टी पी", "UPI PIN daliye" refund scam, a family chat, a retelling of a bank advisory) were written after probing the rules with such text. The probe found the rules missed "O T P" spelled with spaces and "PIN daliye"; both were fixed. Rules-only 68/68, live 68/68.
+   - V29 ("the bank said not to tell anyone, so I told no one") is only passed because its expectation allows "some warning signs"; the app does flag the quoted phrase "kisi ko mat batana" in that retelling. That is a mild false positive and is not fixed.
 
 **Caveat:** the fixes were made after seeing these exact failures, so the 63/63 is not an unbiased accuracy measure. It shows the known failure modes are handled, not that the app is accurate on real calls. The case set was written by the same author as the rules (see `evals/results/limited-run1-before-fixes.md` for the first-run failures on the second set).
 
@@ -37,9 +40,13 @@ Groups: scams in English, Hinglish and Hindi; genuine calls (delivery, bank, ser
 
 The audio here is **clean computer-generated speech**, not a phone speaker in a room, so it says nothing about accuracy on real calls.
 
+### Parent-phone ("solo") mode, in the development browser
+
+Run against the fake Sarvam on localhost with a **synthetic tone as a fake microphone** (the browser pane has no real mic): `/listen` with no code showed the solo setup, tapping Start created a session, the page uploaded 8-second clips, and after about 24 seconds the full-screen "This call looks like a scam" warning appeared. Checked at phone width. This shows the page logic works; it says nothing about a real phone microphone, real calls or real speech.
+
 ## 4. Not tested (do not assume these work)
 
-- **Live Guard on a real call**, same phone on speaker or with a second device next to the speaker. Many phones mute the microphone for apps during a call. Whether the other person's voice is heard is **unknown**.
+- **Live Guard on a real call**, on the parent's own phone on speaker (the main setup) or with a second device next to it. Many phones mute the microphone for apps during a call. Whether the other person's voice is heard is **unknown**.
 - **Automatic start for numbers not in contacts:** not built. A web page cannot detect incoming calls or read contacts; it needs a native Android app.
 - iOS: capturing call audio is not possible; background behaviour of the listener page when the screen locks is untested.
 - Real microphone capture on real Android and iPhone browsers (the development browser blocks the mic; the encoder is unit-tested).

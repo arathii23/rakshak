@@ -316,3 +316,12 @@ test('status: proxy diagnostic is off by default and reports only a count when e
   assert.ok(!JSON.stringify(r).includes('9.9.9.9'));
   await d.close();
 });
+
+test('static files always revalidate (a stale script next to fresh HTML breaks the page after an update)', async () => {
+  const s = await start();
+  for (const f of ['/', '/listen', '/app.js', '/i18n-live.js', '/styles.css']) {
+    const r = await s.get(f);
+    assert.equal(r.headers.get('cache-control'), 'no-cache', f);
+  }
+  await s.close();
+});

@@ -3,13 +3,9 @@ import { STR } from './i18n.js';
 import { LSTR } from './i18n-live.js';
 import { el, markedText, suspiciousList, verdictBox, fmtClock, translator, beep, vibrate, unlockAudio } from './ui-kit.js';
 
-const LOCAL = {
-  en: { errBusy: 'All protection slots are in use right now. Please try again in a few minutes.', errRate: 'Too many attempts. Please wait a while and try again.', errConfig: 'Live Guard is not set up on this server.', errGeneric: 'Something went wrong. Please try again.', errNet: 'Could not reach Rakshak. Check your internet.' },
-  hi: { errBusy: 'अभी सभी सुरक्षा स्लॉट भरे हैं। कुछ मिनट बाद कोशिश करें।', errRate: 'बहुत ज़्यादा कोशिशें हुईं। कुछ देर रुककर दोबारा करें।', errConfig: 'इस सर्वर पर लाइव गार्ड सेट नहीं है।', errGeneric: 'कुछ गड़बड़ हो गई। कृपया दोबारा कोशिश करें।', errNet: 'रक्षक तक नहीं पहुँच सके। इंटरनेट जाँचें।' },
-};
 const store = { get: (k) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch { /* blocked */ } } };
 let lang = store.get('rakshak.lang') || ((navigator.language || '').toLowerCase().startsWith('hi') ? 'hi' : 'en');
-const t = translator(() => lang, LSTR, STR, LOCAL);
+const t = translator(() => lang, LSTR, STR);
 const app = document.getElementById('app');
 
 let code = null, es = null, poll = null, last = null, receivedAt = 0, lastSeq = null, ticker = null, alertsOn = false;

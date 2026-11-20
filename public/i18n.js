@@ -2,7 +2,7 @@
 export const STR = {
   en: {
     appName: 'Rakshak', appSub: 'Scam Call Assistant',
-    scope: 'Rakshak checks words: typed, spoken, or (in Live Guard) heard through a second device while a call is on speaker. It never listens in the background, never records calls automatically, and cannot block calls.',
+    scope: 'Rakshak checks words: typed, spoken, or (in Live Guard) heard through the microphone while you hold a call on speaker and tap Start. It never listens in the background, never records calls automatically, and cannot block calls.',
     inLabel: 'What did the caller say?',
     inPlaceholder: "Type or paste the caller's words. Hindi, Hinglish or English.",
     clear: 'Clear', check: 'Check', checking: 'Checking…', speakInstead: 'Speak instead',
@@ -58,7 +58,7 @@ export const STR = {
   },
   hi: {
     appName: 'रक्षक', appSub: 'स्कैम कॉल सहायक',
-    scope: 'रक्षक शब्द जाँचता है: लिखे हुए, बोले हुए, या (लाइव गार्ड में) स्पीकर पर चल रही कॉल को दूसरे डिवाइस से सुनकर। यह कभी पीछे चलकर नहीं सुनता, कॉल अपने-आप रिकॉर्ड नहीं करता और कॉल ब्लॉक नहीं कर सकता।',
+    scope: 'रक्षक शब्द जाँचता है: लिखे हुए, बोले हुए, या (लाइव गार्ड में) स्पीकर पर चल रही कॉल को माइक्रोफ़ोन से सुनकर, जब आप Start दबाएँ। यह कभी पीछे चलकर नहीं सुनता, कॉल अपने-आप रिकॉर्ड नहीं करता और कॉल ब्लॉक नहीं कर सकता।',
     inLabel: 'कॉल करने वाले ने क्या कहा?',
     inPlaceholder: 'कॉल करने वाले के शब्द लिखें या पेस्ट करें। हिंदी, हिंग्लिश या English।',
     clear: 'मिटाएँ', check: 'जाँचें', checking: 'जाँच हो रही है…', speakInstead: 'बोलकर बताएँ',
