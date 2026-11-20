@@ -1,6 +1,6 @@
 // Continuous microphone capture that emits a 16 kHz mono WAV Blob every `chunkSeconds`.
 // Used by the parent-device page (Live Guard). Nothing is stored in the browser.
-import { toWav16k } from './wav-encode.js';
+import { toWav16k } from './wav-encode.js?v=20261120b';
 
 export async function startChunkRecorder({ chunkSeconds = 8, onChunk, onLevel }) {
   const stream = await navigator.mediaDevices.getUserMedia({

@@ -4,7 +4,7 @@ All test texts are **synthetic**, written by Claude for testing. None are real c
 
 ## 1. Automated tests: `npm test`
 
-Stubbed Sarvam, no network, no credits. **Result of the latest run: 79 tests, 79 pass, 0 fail** (`evals/results/unit-tests-run.txt`).
+Stubbed Sarvam, no network, no credits. **Result of the latest run: 80 tests, 80 pass, 0 fail** (`evals/results/unit-tests-run.txt`).
 
 Covers: rule detection and false positives (single words, "never share your OTP", doorstep delivery OTP, official-channel reminders); AI merge guards (AI cannot reach "very likely a scam" alone, cannot raise a verdict without a quote that exists in the text, cannot lower a rule verdict, one- or two-word AI quotes cannot raise a verdict, wrong-script explanation falls back); empty/invalid/too-long input; service failures (HTTP 500, 503, 429, 402, 401, 403, network failure, malformed model output) producing a labelled limited check; masking of long digit strings before they reach the AI; no "safe" verdict and no percentages; recording validation (empty, silent, too short, too long) **before** credits are spent; rate and daily limits; the server log containing no text, audio or IPs; WAV encoder against the server validator; Live Guard sessions (create, chunking, alert only goes up, caps, wipe on end/idle, viewer limits, bad-code limits, SSE refusal).
 

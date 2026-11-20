@@ -1,7 +1,7 @@
 // Family page for Live Guard: create a code, send the link to the parent's second device, watch alerts live.
-import { STR } from './i18n.js';
-import { LSTR } from './i18n-live.js';
-import { el, markedText, suspiciousList, verdictBox, fmtClock, translator, beep, vibrate, unlockAudio } from './ui-kit.js';
+import { STR } from './i18n.js?v=20261120b';
+import { LSTR } from './i18n-live.js?v=20261120b';
+import { el, markedText, suspiciousList, verdictBox, fmtClock, translator, beep, vibrate, unlockAudio } from './ui-kit.js?v=20261120b';
 
 const store = { get: (k) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch { /* blocked */ } } };
 let lang = store.get('rakshak.lang') || ((navigator.language || '').toLowerCase().startsWith('hi') ? 'hi' : 'en');

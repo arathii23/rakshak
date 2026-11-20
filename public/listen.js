@@ -1,9 +1,9 @@
 // Parent-device page for Live Guard. Sits next to the phone while a call is on speaker, sends short
 // audio clips to the server, and shows/speaks a warning when the server raises the alert.
-import { STR } from './i18n.js';
-import { LSTR } from './i18n-live.js';
-import { el, icon, ICONS, translator, beep, vibrate, unlockAudio } from './ui-kit.js';
-import { startChunkRecorder } from './recorder.js';
+import { STR } from './i18n.js?v=20261120b';
+import { LSTR } from './i18n-live.js?v=20261120b';
+import { el, icon, ICONS, translator, beep, vibrate, unlockAudio } from './ui-kit.js?v=20261120b';
+import { startChunkRecorder } from './recorder.js?v=20261120b';
 
 const store = { get: (k) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch { /* blocked */ } } };
 let lang = store.get('rakshak.lang') || ((navigator.language || '').toLowerCase().startsWith('hi') ? 'hi' : 'en');

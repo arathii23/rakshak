@@ -1,6 +1,6 @@
-import { STR, EXAMPLES } from './i18n.js';
-import { toWav16k } from './wav-encode.js';
-import { LSTR } from './i18n-live.js';
+import { STR, EXAMPLES } from './i18n.js?v=20261120b';
+import { toWav16k } from './wav-encode.js?v=20261120b';
+import { LSTR } from './i18n-live.js?v=20261120b';
 
 const $ = (id) => document.getElementById(id);
 const store = {
