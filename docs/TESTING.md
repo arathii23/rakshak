@@ -4,9 +4,9 @@ All test texts are **synthetic**, written by Claude for testing. None are real c
 
 ## 1. Automated tests: `npm test`
 
-Stubbed Sarvam, no network, no credits. **Result of the latest run: 80 tests, 80 pass, 0 fail** (`evals/results/unit-tests-run.txt`).
+Stubbed Sarvam, no network, no credits. **Result of the latest run: 110 tests, 110 pass, 0 fail** (`evals/results/unit-tests-run.txt`).
 
-Covers: rule detection and false positives (single words, "never share your OTP", doorstep delivery OTP, official-channel reminders); AI merge guards (AI cannot reach "very likely a scam" alone, cannot raise a verdict without a quote that exists in the text, cannot lower a rule verdict, one- or two-word AI quotes cannot raise a verdict, wrong-script explanation falls back); empty/invalid/too-long input; service failures (HTTP 500, 503, 429, 402, 401, 403, network failure, malformed model output) producing a labelled limited check; masking of long digit strings before they reach the AI; no "safe" verdict and no percentages; recording validation (empty, silent, too short, too long) **before** credits are spent; rate and daily limits; the server log containing no text, audio or IPs; WAV encoder against the server validator; Live Guard sessions (create, chunking, alert only goes up, caps, wipe on end/idle, viewer limits, bad-code limits, SSE refusal).
+Covers: rule detection and false positives (single words, "never share your OTP", doorstep delivery OTP, official-channel reminders); AI merge guards (the AI cannot raise a verdict without a quote that exists in the text, one- or two-word quotes and very short texts cannot raise it, "very likely" needs real evidence, the AI finding nothing outvotes one thin keyword hit but never a firm phrase such as call merging, wrong-script explanation falls back); reading a model answer that is cut off or padded with blank lines; matching a slightly mis-copied quote to the user's own words; the rules added for the accuracy work (call merging, a code described without the word OTP, gift cards, payments put as an obligation, retellings, news and advice, a cab driver's PIN) and a guard that the rules on the development sets keep their false-alarm rate low; empty/invalid/too-long input; service failures (HTTP 500, 503, 429, 402, 401, 403, network failure, malformed model output) producing a labelled limited check; masking of long digit strings before they reach the AI; no "safe" verdict and no percentages; recording validation (empty, silent, too short, too long) **before** credits are spent; rate and daily limits; the server log containing no text, audio or IPs; WAV encoder against the server validator; Live Guard sessions (create, chunking, alert only goes up, caps, wipe on end/idle, viewer limits, bad-code limits, SSE refusal).
 
 ## 2. Eval cases: 68 synthetic cases through the real pipeline
 
@@ -55,7 +55,7 @@ Run against the fake Sarvam on localhost with a **synthetic tone as a fake micro
 - **Automatic start for numbers not in contacts:** not built. A web page cannot detect incoming calls or read contacts; it needs a native Android app.
 - iOS: capturing call audio is not possible; background behaviour of the listener page when the screen locks is untested.
 - Real microphone capture on real Android and iPhone browsers (the development browser blocks the mic; the encoder is unit-tested).
-- Audible quality of read-aloud audio in Hindi; STT accuracy on noisy, accented or compressed speakerphone audio.
+- Audible quality of read-aloud audio in Hindi. STT accuracy on real noisy, accented or compressed speakerphone audio: only 8 computer-voice clips were tried with a phone-and-room sound simulation (`docs/ACCURACY.md`).
 - Hindi UI and explanation wording reviewed by a native speaker (written with AI help).
 - Whether two different real visitors get separate rate-limit buckets on the host (the proxy headers were measured, see section 5, but only from one address).
 - Scam-detection accuracy on real calls; false-positive rate on real calls. No percentages are claimed.
@@ -83,3 +83,7 @@ The proxy measurement used a temporary flag (`DEBUG_IP_DIAG`), now set to 0.
 ## 6. Cost caps (not measured spend)
 
 Daily caps: 250 AI checks, 1200 seconds of speech-to-text, 8000 characters of read-aloud. These are caps, not measured spend; the real hard stop is the Sarvam credit balance. Check actual rates on Sarvam's pricing page before relying on any rupee figure.
+
+## 7. Accuracy evaluation (added 2026-11-21)
+
+A separate benchmark of four labelled sets of invented texts (206 development texts, two held-out sets of 110 and 98), a simulation of 13 whole calls through the Live Guard code, and an 8-clip speech check. Results, method and limits are in [`ACCURACY.md`](ACCURACY.md). Headline: on the held-out sets the app flagged 109 of 109 scam texts and 2 of 70 honest texts; the first version flagged 49 of 54 scam texts and 2 of 31 honest texts on held-out set B. The first version was not run on held-out set A. All texts are invented and nobody has tested a real call.

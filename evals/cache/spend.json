@@ -1,9 +1,9 @@
 {
-  "calls": 442,
+  "calls": 800,
   "failedCalls": 0,
-  "promptTokens": 391116,
-  "completionTokens": 48027,
-  "sttSeconds": 0,
-  "estRs": 14.96745,
-  "updated": "2026-11-20T19:52:08.831Z"
+  "promptTokens": 751533,
+  "completionTokens": 83683,
+  "sttSeconds": 63.729749999999996,
+  "estRs": 28.767764,
+  "updated": "2026-11-20T20:00:59.497Z"
 }

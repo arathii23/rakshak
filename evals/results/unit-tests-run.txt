@@ -1,3 +1,3 @@
-ℹ tests 80
-ℹ pass 80
+ℹ tests 110
+ℹ pass 110
 ℹ fail 0

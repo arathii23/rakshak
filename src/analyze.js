@@ -184,7 +184,8 @@ export async function analyze({ text, lang, sarvam, limitedReason = null }) {
  *  - With no rule signal, one- or two-word quotes and very short texts describe a topic, not a demand: ignored.
  *  - With no rule signal, "likely scam" needs real evidence (two or more substantial quotes, or one long one).
  *  - When the AI explicitly finds nothing and the rules found only one thin signal, the AI wins (the rules cannot
- *    tell advice, news or a retelling from a demand). Rules that found two or more different kinds of signal are kept.
+ *    tell advice, news or a retelling from a demand). Where the rules found two or more kinds of signal and the AI
+ *    still finds nothing, the answer is "warning signs": neither side is trusted enough for "very likely".
  */
 export function mergeVerdicts({ text, rules, rVerdict, aiVerdict, quotes, hasStrongRule }) {
   let a = aiVerdict;
@@ -207,7 +208,11 @@ export function mergeVerdicts({ text, rules, rVerdict, aiVerdict, quotes, hasStr
     if (sev(rVerdict) === 0) return { verdict: a, reason };
     const overwhelming = rules.score >= 2 && rules.strongIds.length >= 2;
     const firm = (rules.firmIds || []).length > 0; // a phrase honest callers almost never use (call merging, "digital arrest", a named remote-access app)
-    if (a === 'no_clear_signs' && wordCount(text) >= 6 && !overwhelming && !firm) return { verdict: a, reason: 'ai_veto' };
+    if (a === 'no_clear_signs' && wordCount(text) >= 6 && !firm) {
+      // The AI read the whole text and found nobody asking for anything; keyword rules cannot tell a story, news or advice
+      // from a demand. Where the two strongly disagree the answer is a warning, never "very likely".
+      return overwhelming ? { verdict: 'warning_signs', reason: 'ai_rules_disagree' } : { verdict: a, reason: 'ai_veto' };
+    }
     return { verdict: rVerdict, reason: 'rules' };
   }
   return sev(a) >= sev(rVerdict) ? { verdict: a, reason } : { verdict: rVerdict, reason: 'rules' };

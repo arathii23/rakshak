@@ -17,7 +17,7 @@ There are no scam percentages anywhere.
 2. Type the caller's words, or tap **Speak instead**. A short recording is turned into text by Sarvam; you can read and fix the text before anything is checked.
 3. Tap **Check**. Two layers run:
    - **Rules** (`src/rules.js`) find specific demands and threats in Hindi script, Roman Hinglish and English (asking for an OTP/PIN, money, an app install, threats of arrest or blocking, secrecy). A single word like "OTP" or "police" is never a warning sign by itself. "Never share your OTP" and a delivery person at your door are recognised as normal.
-   - **Sarvam AI** (`sarvam-105b-conversations`) judges the whole text and quotes the words that matter. Every quote must appear exactly in your text or it is dropped. The AI can never declare "very likely a scam" unless a rule also found a signal, and it can never lower a verdict the rules found.
+   - **Sarvam AI** (`sarvam-105b-conversations`) judges the whole text and quotes the words that matter. Every quote must be found in your text (a slightly mis-copied quote is matched to your own words) or it is dropped, and the AI cannot raise a verdict without such a quote. "Very likely" needs real evidence. When the AI finds nothing, one thin keyword hit does not overrule it, but phrases that honest callers almost never use (asking you to merge calls, "digital arrest", a remote-access app) always count. How this was measured, and how far to trust it: [`docs/ACCURACY.md`](docs/ACCURACY.md).
 4. You see the verdict, the highlighted words, a short explanation, and one next step. **Read aloud** speaks it (Sarvam text-to-speech).
 5. Recent checks are saved **only on your device** (localStorage), with delete buttons.
 
@@ -76,12 +76,13 @@ Empty, silent or too-short recordings are rejected **before** any credit is spen
 ## Tests
 
 ```bash
-npm test          # unit + integration tests (stubbed Sarvam, no network, no credits)
-npm run eval      # eval cases through the pipeline in limited (rules-only) mode
+npm test          # 110 unit + integration tests (stubbed Sarvam, no network, no credits)
+npm run eval      # 68 eval cases through the pipeline in limited (rules-only) mode
 npm run eval:live # same cases with the real Sarvam AI (needs the key; spends a few paise)
+npm run eval:acc -- --set dev,dev2 --configs rules-v2,hybrid-v2   # accuracy benchmark, replayed from saved answers (free)
 ```
 
-Results and known limitations: [`docs/TESTING.md`](docs/TESTING.md). Unverified assumptions: [`docs/ASSUMPTIONS.md`](docs/ASSUMPTIONS.md).
+Results and known limitations: [`docs/TESTING.md`](docs/TESTING.md). Accuracy on four labelled sets of invented texts, what changed and what is still unknown: [`docs/ACCURACY.md`](docs/ACCURACY.md). Unverified assumptions: [`docs/ASSUMPTIONS.md`](docs/ASSUMPTIONS.md).
 
 ## Deploy (Render free tier)
 
@@ -110,4 +111,4 @@ If the app's address changes, run that again. The running app only serves the fi
 
 ## Known limitations
 
-See `docs/TESTING.md`. In short: Hindi wording was written with AI help and needs review by a native speaker; the keyword rules are tuned on synthetic examples and can miss paraphrases; real-microphone capture, Live Guard on a real call (same phone or second device) and audible read-aloud must be tried on real phones; no real-user interviews have been done.
+See `docs/TESTING.md`. In short: Hindi wording was written with AI help and needs review by a native speaker; the keyword rules are tuned on synthetic examples and can miss paraphrases; real-microphone capture, Live Guard on a real call (same phone or second device) and audible read-aloud must be tried on real phones; no real-user interviews have been done. Accuracy numbers come from invented texts only; nobody has tested the app on a real call, so treat them as a benchmark, not a promise (`docs/ACCURACY.md`).

@@ -84,7 +84,11 @@ test('merge: the AI finding nothing outvotes a single thin rule hit, but not str
   assert.equal(runRules(thin).score, 1);
   assert.equal(merge(thin, 'no_clear_signs').verdict, 'no_clear_signs');
   const strong = 'Main CBI se bol raha hoon. Digital arrest mein hain, OTP bata do.';
-  assert.equal(merge(strong, 'no_clear_signs').verdict, 'likely_scam');
+  assert.equal(merge(strong, 'no_clear_signs').verdict, 'likely_scam'); // a firm phrase: the rules stand
+  // two kinds of keyword signal but the AI reads a story: neither side is trusted enough for "very likely"
+  const story = 'Meri padosan bol rahi thi ki unko ek call aaya ki unka account block ho jayega aur OTP maanga. Unhone mana kar diya aur bank ko call kiya. Sahi kiya na?';
+  assert.ok(runRules(story).score >= 2);
+  assert.equal(merge(story, 'no_clear_signs').verdict, 'warning_signs');
   const merging = 'Sir please merge the call with my colleague so that we can all talk together';
   assert.equal(merge(merging, 'no_clear_signs').verdict, 'warning_signs');
 });
