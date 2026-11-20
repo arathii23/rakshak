@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: rakshak
+    runtime: node
+    plan: free
+    buildCommand: echo "no build step"
+    startCommand: node server.js
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: SARVAM_API_KEY
+        sync: false   # you type this in the Render dashboard; it is never stored in this repo

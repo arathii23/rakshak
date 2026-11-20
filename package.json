@@ -1,0 +1,16 @@
+{
+  "name": "rakshak",
+  "version": "1.0.0",
+  "description": "Rakshak — Scam Call Assistant: check what a caller said (Hindi, Hinglish, English).",
+  "author": "arathii23",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/*.test.js",
+    "eval": "node evals/run.js",
+    "eval:live": "node evals/run.js --live"
+  }
+}
