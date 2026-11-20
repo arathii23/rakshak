@@ -12,3 +12,5 @@ services:
         value: "22"
       - key: SARVAM_API_KEY
         sync: false   # you type this in the Render dashboard; it is never stored in this repo
+      - key: DEBUG_IP_DIAG   # TEMPORARY: exposes only the number of X-Forwarded-For entries, to verify proxy hops
+        value: "1"
