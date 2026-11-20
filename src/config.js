@@ -27,6 +27,16 @@ export function loadConfig(env = process.env) {
     maxSpeakChars: num(env.MAX_SPEAK_CHARS, 450),
     maxAudioSeconds: num(env.MAX_AUDIO_SECONDS, 20),
     timeouts: { chat: num(env.CHAT_TIMEOUT_MS, 15000), stt: num(env.STT_TIMEOUT_MS, 25000), tts: num(env.TTS_TIMEOUT_MS, 20000) },
+    live: {
+      sessionMaxSeconds: num(env.LIVE_SESSION_MAX_SECONDS, 900), // 15 min of speech per session
+      chunkMaxSeconds: num(env.LIVE_CHUNK_MAX_SECONDS, 12),
+      maxSessions: num(env.LIVE_MAX_SESSIONS, 20),
+      aiPerSession: num(env.LIVE_AI_PER_SESSION, 15),
+      createPerHour: num(env.LIVE_CREATE_PER_HOUR, 4),
+      badCode10: num(env.LIVE_BAD_CODE_PER_10MIN, 10),
+      idleMs: num(env.LIVE_IDLE_MS, 15 * 60 * 1000),
+      maxAgeMs: num(env.LIVE_MAX_AGE_MS, 45 * 60 * 1000),
+    },
     daily: {
       checks: num(env.DAILY_AI_CHECKS, 250),
       stt_seconds: num(env.DAILY_STT_SECONDS, 1200),
@@ -34,7 +44,7 @@ export function loadConfig(env = process.env) {
     },
     perIp: {
       checks10: num(env.IP_CHECKS_PER_10MIN, 10), checksDay: num(env.IP_CHECKS_PER_DAY, 40),
-      stt10: num(env.IP_STT_PER_10MIN, 5), tts10: num(env.IP_TTS_PER_10MIN, 6),
+      stt10: num(env.IP_STT_PER_10MIN, 5), tts10: num(env.IP_TTS_PER_10MIN, 6), liveChunk1m: num(env.IP_LIVE_CHUNKS_PER_MIN, 12),
     },
   };
 }

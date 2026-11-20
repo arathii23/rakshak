@@ -2,7 +2,7 @@
 export const STR = {
   en: {
     appName: 'Rakshak', appSub: 'Scam Call Assistant',
-    scope: 'Rakshak checks the words you give it. It does not listen to your calls, record them automatically, or block calls.',
+    scope: 'Rakshak checks words: typed, spoken, or (in Live Guard) heard through a second device while a call is on speaker. It never listens in the background, never records calls automatically, and cannot block calls.',
     inLabel: 'What did the caller say?',
     inPlaceholder: "Type or paste the caller's words. Hindi, Hinglish or English.",
     clear: 'Clear', check: 'Check', checking: 'Checking…', speakInstead: 'Speak instead',
@@ -20,7 +20,7 @@ export const STR = {
     rec1: 'Your recording (up to {s} seconds) is sent to our server and then to Sarvam AI, which turns it into text.',
     rec2: 'We delete it straight after. We do not keep recordings or text on our server.',
     rec3: 'You will see the text and can fix it before anything is checked.',
-    recDevice: '<strong>During a phone call:</strong> this phone cannot record the other person. To record a call on speaker, use a second device (another phone or a laptop) next to the speaker. Rakshak never listens in the background.',
+    recDevice: '<strong>During a phone call:</strong> this phone cannot record the other person. To record a call on speaker, use a second device (another phone or a laptop) next to the speaker. Rakshak never listens in the background. For listening to a whole call, use Live Guard.',
     recStart: 'Start recording', cancel: 'Cancel', recNow: 'Recording… speak now', recStop: 'Stop',
     recWorking: 'Turning your voice into text…', recLimit: 'Stops by itself after {s} seconds.',
     capWords: 'What was said', capSus: "The caller's suspicious words", capAlso: 'Also noticed', capWhy: 'Why', capNext: 'What to do now',
@@ -58,7 +58,7 @@ export const STR = {
   },
   hi: {
     appName: 'रक्षक', appSub: 'स्कैम कॉल सहायक',
-    scope: 'रक्षक सिर्फ़ वही शब्द जाँचता है जो आप उसे देते हैं। यह आपकी कॉल नहीं सुनता, अपने-आप रिकॉर्ड नहीं करता और कॉल ब्लॉक नहीं करता।',
+    scope: 'रक्षक शब्द जाँचता है: लिखे हुए, बोले हुए, या (लाइव गार्ड में) स्पीकर पर चल रही कॉल को दूसरे डिवाइस से सुनकर। यह कभी पीछे चलकर नहीं सुनता, कॉल अपने-आप रिकॉर्ड नहीं करता और कॉल ब्लॉक नहीं कर सकता।',
     inLabel: 'कॉल करने वाले ने क्या कहा?',
     inPlaceholder: 'कॉल करने वाले के शब्द लिखें या पेस्ट करें। हिंदी, हिंग्लिश या English।',
     clear: 'मिटाएँ', check: 'जाँचें', checking: 'जाँच हो रही है…', speakInstead: 'बोलकर बताएँ',

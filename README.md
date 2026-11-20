@@ -3,8 +3,8 @@
 Check what a caller said. Type it, or record a short voice clip, in **Hindi, Hinglish or English**.
 Rakshak points out the caller's **exact suspicious words**, explains in **Hindi or English**, and gives **one practical next step**.
 
-**What it is not:** Rakshak does **not** listen to calls, record calls automatically, run in the background, or block calls.
-It only checks words you give it. It cannot confirm whether a call is real, and "no clear warning signs" never means "safe".
+**What it is not:** Rakshak does **not** run in the background, start by itself when a call arrives, record calls automatically, or block calls.
+It only checks words you give it, or (in Live Guard) audio you deliberately start during a call. It cannot confirm whether a call is real, and "no clear warning signs" never means "safe".
 There are no scam percentages anywhere.
 
 > Built for a product case study. All example texts are synthetic and written for testing; none are real calls.
@@ -21,9 +21,22 @@ There are no scam percentages anywhere.
 
 If Sarvam is down, out of credit, slow, or a limit is hit, you get a clearly labelled **Limited check** (rules only) with the reason. Typing always works.
 
-### Speakerphone and the same phone
+### Live Guard (checking a call while it happens)
 
-A phone cannot record the other person while a call is in progress (Android and iOS give the call audio priority over browser microphones). To record a call on speaker, use a **second device** next to the speaker. Rakshak says this before you record.
+Built for children protecting their parents.
+
+1. The family member opens `/guard`, ticks that the parent knows and agrees, and gets a 6-character code and a WhatsApp link.
+2. The parent opens the link (`/listen#CODE`) on the phone being protected, or on a second device next to it, ticks consent and taps **Start listening**. When an unknown number calls, they take the call on speaker.
+3. The page sends ~8-second audio clips to the server. Sarvam turns them into text, the rules (and, on some clips, the AI) check the rolling transcript, and the alert level only ever goes **up** during a call.
+4. The family sees live alerts, highlighted words and one next step. The parent's screen shows a full-screen warning with beeps and vibration, and a spoken warning for "very likely a scam".
+5. Everything is held in server memory only. A session is wiped when it ends, after 15 minutes without audio, or after 45 minutes. Nothing is saved or logged.
+
+**What this needs and what is not possible (honest limits):**
+
+- The listener page must be opened by a person and tapped Start. A web page **cannot** detect an incoming call, check whether the number is in the contacts, or start by itself, so "turn on automatically for unknown numbers" is **not built**. It would need a native Android app and is listed as future work.
+- A phone usually cannot record the other person during a normal call; many phones mute the microphone for apps. Using the **same phone** on speaker is therefore **experimental and untested on real calls**. A **second device** next to the speaker is the setup this project is designed around, but that has also not been tried with a real call yet.
+- iOS cannot capture call audio at all.
+- Limits: 15 minutes of speech per session, 20 live sessions at once, 4 new codes per hour per person.
 
 ## Run locally
 
@@ -84,4 +97,4 @@ Results and known limitations: [`docs/TESTING.md`](docs/TESTING.md). Unverified 
 
 ## Known limitations
 
-See `docs/TESTING.md`. In short: Hindi wording was written with AI help and needs review by a native speaker; the keyword rules are tuned on synthetic examples and can miss paraphrases; real-microphone capture and audible read-aloud must be tried on a real phone; no real-user interviews have been done.
+See `docs/TESTING.md`. In short: Hindi wording was written with AI help and needs review by a native speaker; the keyword rules are tuned on synthetic examples and can miss paraphrases; real-microphone capture, Live Guard on a real call (same phone or second device) and audible read-aloud must be tried on real phones; no real-user interviews have been done.

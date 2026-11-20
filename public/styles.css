@@ -126,3 +126,26 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
 .spinner { width: 44px; height: 44px; border: 5px solid var(--line); border-top-color: var(--brand); border-radius: 50%; margin: 6px auto; animation: spin 0.9s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 3s; } }
+
+/* ---- Live Guard ---- */
+a.brand { color: inherit; text-decoration: none; }
+a.btn { text-decoration: none; }
+.btn.big { min-height: 68px; font-size: 1.25rem; }
+.code { font: 800 2.4rem/1.1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .25em; text-align: center; padding: 10px 0; background: var(--brand-soft); border-radius: 12px; color: var(--brand); }
+.linkbox { font-size: .85rem; overflow-wrap: anywhere; background: var(--bg); border: 1px dashed var(--line); border-radius: 10px; padding: 8px 10px; user-select: all; }
+.check { display: flex; gap: 12px; align-items: flex-start; font-weight: 600; min-height: 44px; }
+.check input { width: 28px; height: 28px; flex: none; margin-top: 2px; accent-color: var(--brand); }
+.pill { margin: 0; border-radius: 12px; padding: 12px 14px; font-weight: 700; background: var(--grey-bg); color: var(--grey); border: 1px solid var(--grey-line); }
+.pill.ok { background: var(--brand-soft); color: var(--brand); border-color: var(--brand); }
+.pill.warn { background: var(--warn-bg); color: var(--warn); border-color: var(--warn-line); }
+.alertcard { border-width: 2px; border-color: var(--danger-line); }
+.listening { color: var(--brand); }
+.overlay { position: fixed; inset: 0; z-index: 20; background: rgba(0,0,0,.7); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.ovbox { width: min(100%, 460px); border-radius: 20px; padding: 24px; display: grid; gap: 14px; text-align: center; border: 4px solid; }
+.ovbox svg { width: 72px; height: 72px; margin: 0 auto; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ovbox h2 { font-size: 1.7rem; }
+.ovbox p.big { font-size: 1.35rem; font-weight: 700; line-height: 1.4; }
+.ovbox.scam { background: var(--danger-bg); color: var(--danger); border-color: var(--danger); }
+.ovbox.warn { background: var(--warn-bg); color: var(--warn); border-color: var(--warn); }
+.livecard { background: var(--brand-soft); border-color: var(--brand); }
+@media (prefers-reduced-motion: no-preference) { .ovbox.scam { animation: pulse 1.2s ease-in-out infinite; } @keyframes pulse { 50% { transform: scale(1.02); } } }

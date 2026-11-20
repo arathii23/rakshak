@@ -305,3 +305,14 @@ test('status: reports AI availability without exposing the key', async () => {
   assert.ok(!body.includes(FAKE_KEY));
   await s.close();
 });
+
+test('status: proxy diagnostic is off by default and reports only a count when enabled', async () => {
+  const s = await start();
+  assert.equal((await (await s.get('/api/status')).json()).proxyEntries, undefined);
+  await s.close();
+  const d = await start({ env: { DEBUG_IP_DIAG: '1' } });
+  const r = await (await fetch(d.base + '/api/status', { headers: { 'x-forwarded-for': '9.9.9.9, 8.8.8.8' } })).json();
+  assert.equal(r.proxyEntries, 2);
+  assert.ok(!JSON.stringify(r).includes('9.9.9.9'));
+  await d.close();
+});

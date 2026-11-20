@@ -25,9 +25,14 @@ This file is a worksheet: fill the right-hand column only with what a real perso
 | 5 | The next steps given (hang up, call back on an official number, call 1930) are what the person would actually do | Usefulness of advice | |
 | 6 | People would prefer this over simply asking a general chatbot or a family member | Core reason to exist | |
 | 7 | A free tool with daily caps is acceptable to initial users | Product model | |
+| 8 | A parent will agree to being listened to by their child's tool, and will open the app and tap Start when an unknown number calls | Live Guard depends on a deliberate tap; nothing starts automatically | |
+| 9 | The child wants live alerts on their own phone during the call | Decides whether the family side is useful | |
 
 ## Not yet tested
 
+- **Live Guard on a real call**, with the same phone on speaker and with a second device next to it. Whether the microphone hears the caller is unknown and device-dependent.
+- Automatic start for numbers not in contacts: **not built** (not possible in a web app).
+- iOS background behaviour of the listener page (the page may be throttled when the screen locks).
 - Real microphone capture on real Android and iPhone browsers (the in-app browser used for development blocks the mic; the WAV encoder is unit-tested).
 - Whether read-aloud audio is clear and natural in Hindi (generation is tested against a stub; audible quality is not).
 - Accuracy of Sarvam speech-to-text on noisy speakerphone audio.

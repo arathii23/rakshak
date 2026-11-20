@@ -1,5 +1,6 @@
 import { STR, EXAMPLES } from './i18n.js';
 import { toWav16k } from './wav-encode.js';
+import { LSTR } from './i18n-live.js';
 
 const $ = (id) => document.getElementById(id);
 const store = {
@@ -15,7 +16,7 @@ let current = null;      // { text, result, example }
 let audio = null;        // playing Audio element
 
 const t = (k, vars = {}) => {
-  let s = (STR[lang] && STR[lang][k]) ?? STR.en[k] ?? k;
+  let s = (STR[lang] && STR[lang][k]) ?? (LSTR[lang] && LSTR[lang][k]) ?? STR.en[k] ?? LSTR.en[k] ?? k;
   for (const [a, b] of Object.entries(vars)) s = s.replaceAll(`{${a}}`, b);
   return s;
 };

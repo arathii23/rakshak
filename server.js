@@ -7,6 +7,8 @@ import { createLimiter, clientIp } from './src/limits.js';
 import { createSarvam, SarvamError } from './src/sarvam.js';
 import { analyze } from './src/analyze.js';
 import { inspectWav } from './src/wav.js';
+import { HttpError } from './src/http-error.js';
+import { createLive } from './src/live.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC = path.join(here, 'public');
@@ -15,8 +17,6 @@ const MIME = {
   '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json; charset=utf-8', '.ico': 'image/x-icon',
 };
 const CSP = "default-src 'self'; img-src 'self' data:; media-src 'self' blob:; connect-src 'self'; style-src 'self'; script-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'";
-
-class HttpError extends Error { constructor(status, code, extra = {}) { super(code); this.status = status; this.code = code; this.extra = extra; } }
 
 async function readBody(req, limit) {
   const declared = Number(req.headers['content-length']);
@@ -40,6 +40,8 @@ export function createApp({ env = process.env, fetchImpl = fetch, now = Date.now
   const sweeper = setInterval(() => limiter.sweep(), 10 * 60 * 1000); sweeper.unref();
   const sarvam = cfg.apiKey ? createSarvam({ apiKey: cfg.apiKey, baseUrl: cfg.sarvamBase, fetchImpl, timeouts: cfg.timeouts }) : null;
   let inflight = 0;
+  const live = createLive({ sarvam, limiter, cfg, now });
+  const liveSweeper = setInterval(() => live.sweep(), 60 * 1000); liveSweeper.unref();
 
   const send = (res, status, body, headers = {}) => {
     const isBuf = Buffer.isBuffer(body);
@@ -124,10 +126,39 @@ export function createApp({ env = process.env, fetchImpl = fetch, now = Date.now
     }
   }
 
+
+  async function handleLive(req, res, ip, url) {
+    const code = String(req.headers['x-session-code'] || url.searchParams.get('code') || '').trim().toUpperCase();
+    const p = url.pathname;
+    if (req.method === 'POST' && p === '/api/live/create') {
+      let body = {};
+      try { body = JSON.parse((await readBody(req, 2 * 1024)).toString('utf8') || '{}'); } catch (e) { if (e instanceof HttpError) throw e; throw new HttpError(400, 'bad_json'); }
+      return send(res, 200, live.create(body?.lang, ip));
+    }
+    if (req.method === 'GET' && p === '/api/live/state') return send(res, 200, live.state(code, ip));
+    if (req.method === 'GET' && p === '/api/live/stream') {
+      live.canAttach(code, ip); // may throw (unknown code / too many viewers) before any header is written
+      res.writeHead(200, { 'content-type': 'text/event-stream; charset=utf-8', 'cache-control': 'no-store', connection: 'keep-alive',
+        'x-accel-buffering': 'no', 'x-content-type-options': 'nosniff', 'content-security-policy': CSP });
+      live.addClient(code, ip, res);
+      return;
+    }
+    if (req.method === 'POST' && p === '/api/live/chunk') {
+      const ct = String(req.headers['content-type'] || '');
+      if (!ct.startsWith('audio/wav') && !ct.startsWith('audio/x-wav')) throw new HttpError(415, 'bad_audio');
+      const buf = await readBody(req, (cfg.live.chunkMaxSeconds + 1) * 16000 * 2 + 4096);
+      return send(res, 200, await live.ingest(code, buf, ip));
+    }
+    if (req.method === 'POST' && p === '/api/live/end') return send(res, 200, live.end(code, ip));
+    throw new HttpError(404, 'not_found');
+  }
+
   function serveStatic(req, res) {
     const url = new URL(req.url, 'http://x');
     let p = decodeURIComponent(url.pathname);
     if (p === '/') p = '/index.html';
+    if (p === '/guard') p = '/guard.html';
+    if (p === '/listen') p = '/listen.html';
     const file = path.normalize(path.join(PUBLIC, p));
     if (!file.startsWith(PUBLIC + path.sep)) return err(res, 404, 'not_found');
     fs.readFile(file, (e, data) => {
@@ -143,14 +174,20 @@ export function createApp({ env = process.env, fetchImpl = fetch, now = Date.now
     try {
       if (req.method === 'GET' && url.pathname === '/health') return send(res, 200, { ok: true });
       if (req.method === 'GET' && url.pathname === '/api/status') {
-        return send(res, 200, { ai: Boolean(sarvam), maxAudioSeconds: cfg.maxAudioSeconds, maxTextChars: cfg.maxTextChars });
+        const out = { ai: Boolean(sarvam), maxAudioSeconds: cfg.maxAudioSeconds, maxTextChars: cfg.maxTextChars };
+        // Off by default. When DEBUG_IP_DIAG=1, reports only HOW MANY proxy entries arrive (never the addresses),
+        // so the right TRUST_PROXY_HOPS can be measured on the real host.
+        if (env.DEBUG_IP_DIAG === '1') out.proxyEntries = String(req.headers['x-forwarded-for'] || '').split(',').filter((x) => x.trim()).length;
+        return send(res, 200, out);
       }
+      if (url.pathname.startsWith('/api/live/')) return await handleLive(req, res, ip, url);
       if (req.method === 'POST' && url.pathname === '/api/check') return await handleCheck(req, res, ip);
       if (req.method === 'POST' && url.pathname === '/api/transcribe') return await handleTranscribe(req, res, ip);
       if (req.method === 'POST' && url.pathname === '/api/speak') return await handleSpeak(req, res, ip);
       if (req.method === 'GET' || req.method === 'HEAD') return serveStatic(req, res);
       return err(res, 405, 'method_not_allowed');
     } catch (e) {
+      if (res.headersSent) { try { res.end(); } catch { /* already closed */ } return; }
       if (e instanceof HttpError) {
         const headers = e.extra?.retryAfterSec ? { 'retry-after': String(e.extra.retryAfterSec) } : {};
         return send(res, e.status, { error: { code: e.code, ...e.extra } }, headers);
@@ -161,7 +198,7 @@ export function createApp({ env = process.env, fetchImpl = fetch, now = Date.now
       log(`${req.method} ${url.pathname} ${res.statusCode} ${Date.now() - started}ms`);
     }
   };
-  return { handler, limiter, config: cfg };
+  return { handler, limiter, live, config: cfg };
 }
 
 // ---- start (only when run directly) ----
