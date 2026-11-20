@@ -95,7 +95,7 @@ Results and known limitations: [`docs/TESTING.md`](docs/TESTING.md). Unverified 
 
 - **Author:** arathii23
 - **AI contributor:** Claude (Anthropic) helped write code, tests and docs. Commits where Claude helped carry a `Co-Authored-By` trailer. The case-study write-up is written by the author, not by AI.
-- **Reference only:** [Kavach](https://github.com/cybergeniee/kavach) (live scam-call monitoring) was reviewed for ideas such as false-positive guardrails. No Kavach code was copied; this project's code is written fresh.
+- **Earlier work:** Kavach, an earlier prototype by the same author (published under a different GitHub account), was used as a reference for ideas. No code was copied from it; the code in this repository was written fresh.
 - **Speech and language:** [Sarvam AI](https://www.sarvam.ai/) APIs (speech-to-text, chat, text-to-speech).
 
 ## Known limitations
